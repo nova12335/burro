@@ -159,6 +159,33 @@ pre{
 }
 @keyframes blink{50%{opacity:0}}
 .blinking{animation:blink 1s step-start infinite}
+
+/* ===== chaos additions ===== */
+.toast{
+  position:fixed;bottom:20px;left:20px;max-width:260px;
+  background:var(--win);border:1px solid var(--cyan);color:var(--text);
+  padding:10px 14px;border-radius:8px;font-size:12px;z-index:2500;
+  box-shadow:0 10px 30px -10px rgba(0,0,0,.6);
+  animation:toastin .3s ease, toastout .35s ease 2.65s forwards;
+}
+@keyframes toastin{from{transform:translateY(16px);opacity:0}to{transform:none;opacity:1}}
+@keyframes toastout{to{opacity:0;transform:translateY(10px)}}
+body.glitch{animation:glitchAnim .25s;}
+@keyframes glitchAnim{0%{filter:none}30%{filter:invert(1)}60%{filter:hue-rotate(180deg) saturate(3)}100%{filter:none}}
+body.banana-cursor, body.banana-cursor *{
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ctext y='24' font-size='24'%3E%F0%9F%8D%8C%3C/text%3E%3C/svg%3E") 16 16, auto !important;
+}
+.confetti-piece{position:fixed;top:-24px;font-size:20px;z-index:4000;pointer-events:none;animation-name:confettiFall;animation-timing-function:linear;animation-fill-mode:forwards;}
+@keyframes confettiFall{to{transform:translateY(112vh) rotate(360deg);opacity:.15}}
+.captcha-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0}
+.captcha-cell{
+  background:var(--win2);border:1px solid var(--line);border-radius:9px;
+  font-size:24px;height:58px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:.15s;
+}
+.captcha-cell:hover{border-color:var(--cyan)}
+.captcha-cell.picked{border-color:var(--pink);background:#1a1015}
+#ad-x{position:absolute;top:8px;right:10px;cursor:pointer;color:var(--dim);font-size:14px}
 </style>
 </head>
 <body>
@@ -227,6 +254,121 @@ function wrapLetters(text){
 
 /* title bar text changer */
 function setTitle(t){ titletext.textContent = t; tabtitle.textContent = t; }
+
+/* ================= extra chaos toolkit ================= */
+function zalgoish(text){
+  const marks = ['\u0301','\u0308','\u0330','\u0347','\u0312','\u0313','\u0344'];
+  return text.split('').map(c=> c===" " ? c : c+(Math.random()<0.5?marks[Math.floor(Math.random()*marks.length)]:'')).join('');
+}
+function toast(msg){
+  const t=document.createElement("div");
+  t.className="toast";
+  t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(()=> t.remove(), 3000);
+}
+const achievements = [
+  "🏆 conquista: clicou em algo.",
+  "🏆 conquista: ainda ta aqui.",
+  "🏆 conquista: burrice nivel 2 desbloqueada.",
+  "🏆 conquista: 0 pontos de logica.",
+  "🏆 conquista: leitor profissional de nada.",
+  "🏆 conquista: sobreviveu ate agora.",
+  "🏆 conquista: banana coletada."
+];
+function notifBurrice(){
+  state.notifCount = (state.notifCount||0)+1;
+  toast(`🔔 vc tem ${state.notifCount} nova(s) burrice(s)`);
+}
+function glitchFlash(){
+  document.body.classList.add("glitch");
+  setTimeout(()=> document.body.classList.remove("glitch"), 250);
+}
+function notRespondingFlash(){
+  const prev = tabtitle.textContent;
+  tabtitle.textContent = "Detector de Burrice (não está respondendo)";
+  setTimeout(()=>{ tabtitle.textContent = prev; }, 1800);
+}
+function bananaCursorBurst(){
+  document.body.classList.add("banana-cursor");
+  setTimeout(()=> document.body.classList.remove("banana-cursor"), 4000);
+}
+function swapButtons(){
+  const nb=$("#nextbtn"), gb=$("#giveupbtn");
+  if(nb && gb && nb.parentNode) nb.parentNode.insertBefore(gb, nb);
+}
+function zalgoQuestionFlash(){
+  const h = document.querySelector("#qarea h2");
+  if(!h) return;
+  const original = h.textContent;
+  h.textContent = zalgoish(original);
+  setTimeout(()=>{ if(h.isConnected) h.textContent = original; }, 900);
+}
+function confettiBurst(){
+  const emojis=['🍌','🎉','🥴','🤡','💀','🍟','🧦','🐟'];
+  for(let i=0;i<26;i++){
+    const p=document.createElement("div");
+    p.className="confetti-piece";
+    p.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    p.style.left = (Math.random()*100)+"vw";
+    p.style.animationDuration = (1.4+Math.random()*1.6)+"s";
+    document.body.appendChild(p);
+    setTimeout(()=> p.remove(), 3200);
+  }
+}
+function fakeAdPopup(){
+  if(state.stage!=="quiz" || document.getElementById("modal-overlay")) return;
+  const ov=document.createElement("div");
+  ov.id="modal-overlay";
+  ov.innerHTML = `<div id="modal-box" style="position:relative;text-align:left">
+    <span id="ad-x">✕</span>
+    <h2 style="margin:6px 0 6px">🎉 vc ganhou 1 banana de ouro!!</h2>
+    <p class="sub">clica pra resgatar (ou nao, tanto faz)</p>
+    <button class="primary" id="adclaim">resgatar</button>
+  </div>`;
+  document.body.appendChild(ov);
+  let dodges=0;
+  const x=$("#ad-x");
+  const dodge=()=>{
+    if(dodges>=3){ ov.remove(); return; }
+    dodges++;
+    x.style.position="relative";
+    x.style.left=(Math.random()*40-20)+"px";
+    x.style.top=(Math.random()*20-10)+"px";
+  };
+  x.addEventListener("mouseover", dodge);
+  x.addEventListener("click", dodge);
+  $("#adclaim").onclick = ()=>{
+    $("#modal-box").innerHTML = "<p>era mentira.</p>";
+    setTimeout(()=> ov.remove(), 1100);
+  };
+}
+const chaosEvents = [glitchFlash, ()=>toast(achievements[Math.floor(Math.random()*achievements.length)]), notRespondingFlash, bananaCursorBurst, zalgoQuestionFlash, swapButtons, notifBurrice];
+setInterval(()=>{
+  if(state.stage!=="quiz") return;
+  const roll = Math.random();
+  if(roll<0.5){
+    chaosEvents[Math.floor(Math.random()*chaosEvents.length)]();
+  } else if(roll<0.62){
+    fakeAdPopup();
+  }
+}, 5500);
+
+/* triple-click the eye = party mode */
+let eyeClicks=[];
+$("#eye").addEventListener("click", ()=>{
+  const now=Date.now();
+  eyeClicks.push(now);
+  eyeClicks=eyeClicks.filter(t=> now-t<1000);
+  if(eyeClicks.length>=3){
+    eyeClicks=[];
+    confettiBurst();
+    toast("🎉 MODO CAOS ATIVADO");
+    const prev = titletext.textContent;
+    setTitle("MODO CAOS ATIVADO");
+    setTimeout(()=> setTitle(prev), 2500);
+  }
+});
 
 /* window control buttons */
 $("#dot-close").onclick = ()=> confirmQuit();
@@ -323,6 +465,8 @@ const state = {
   scores:{A:0,B:0,C:0,D:0},
   qStart:0,
   bsodShown:false,
+  captchaDone:false,
+  notifCount:0,
   degrade:0
 };
 
@@ -360,9 +504,38 @@ const flavorMap = {
   19:{A:"nao valia nada.", B:"eu sei.", C:"por isso mesmo.", D:"cavalo tambem serve."},
   20:{A:"era essa msm.",B:"era essa msm.",C:"era essa msm.",D:"era essa msm."}
 };
-const cowardIndex = 4;   // button runs away on this question
-const flipIndex = 9;     // screen flips on this question
-const bsodChance = 0.35; // chance to trigger bluescreen once, checked after q index 7
+const cowardIndex = 4;    // button runs away on this question
+const flipIndex = 9;      // screen flips on this question
+const bsodChance = 0.35;  // chance to trigger bluescreen once, checked after q index 7
+const captchaIndex = 13;  // fake captcha interstitial appears before this question
+
+function showCaptcha(cb){
+  content.innerHTML = `
+    <h2>prove que vc não é burro</h2>
+    <p class="sub">clica em todas as bananas</p>
+    <div class="captcha-grid" id="cgrid"></div>
+    <button class="primary" id="cbtn">verificar</button>
+  `;
+  const items = ['🍌','🍎','🍌','🚗','🍌','🐟','🖥️','🍌','🪑'];
+  for(let i=items.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [items[i],items[j]]=[items[j],items[i]];
+  }
+  const grid=$("#cgrid");
+  items.forEach(em=>{
+    const cell=document.createElement("div");
+    cell.className="captcha-cell";
+    cell.textContent=em;
+    cell.onclick=()=> cell.classList.toggle("picked");
+    grid.appendChild(cell);
+  });
+  $("#cbtn").onclick = ()=>{
+    content.innerHTML = `<pre>vc errou.
+
+mas vamo deixar passar.</pre>`;
+    setTimeout(cb, 1300);
+  };
+}
 
 /* ================= intro ================= */
 function renderIntro(){
@@ -493,6 +666,14 @@ function draw(){
   if(state.i===cowardIndex){
     makeCoward(nb);
   }
+  nb.addEventListener("mouseenter", ()=>{
+    if(Math.random()<0.3){
+      const original = nb.textContent;
+      const alt = ["proxima??","clica ai","vai","serio?","👉"][Math.floor(Math.random()*5)];
+      nb.textContent = alt;
+      setTimeout(()=>{ if(nb.isConnected) nb.textContent = original; }, 650);
+    }
+  });
   nb.onclick = ()=> handleNext();
 }
 
@@ -540,6 +721,11 @@ function handleNext(){
   const advance = ()=>{
     state.i++;
     if(state.i>=qs.length){ runResult(); return; }
+    if(!state.captchaDone && state.i===captchaIndex){
+      state.captchaDone = true;
+      showCaptcha(()=> draw());
+      return;
+    }
     draw();
     if(flavor) setTimeout(()=> setFlavor(flavor), 150);
   };
