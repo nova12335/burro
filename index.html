@@ -3,24 +3,27 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>descubra sua sexualidade 🌷</title>
+<title>Quiz: Bridger WESTERN 🤠</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rye&family=Special+Elite&family=Bitter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --cream:#fdf6ef;
-  --blush:#f7dcd7;
-  --blush2:#f3c9c6;
-  --coral:#e98973;
-  --coral-deep:#d97060;
-  --lav:#d9c9ef;
-  --lav-deep:#b79fdd;
-  --plum:#4a3b45;
-  --plum-soft:#7a6572;
-  --white:#fffaf5;
-  --line:#ecdcd4;
-  --display:'Fredoka',ui-rounded,sans-serif;
-  --body:'Nunito',sans-serif;
+  --paper:#ecd9ae;
+  --paper2:#e3c795;
+  --paper-dark:#d8bb84;
+  --wood:#4a2f1c;
+  --wood-deep:#33200f;
+  --leather:#7a4a26;
+  --rust:#a3402a;
+  --rust-deep:#822f1e;
+  --ink:#2b1d12;
+  --ink-soft:#5a4632;
+  --brass:#b8863b;
+  --ok:#4c6b2f;
+  --bad:#8a2c1f;
+  --display:'Rye', serif;
+  --type:'Special Elite', cursive;
+  --body:'Bitter', serif;
 }
 *{box-sizing:border-box}
 html,body{height:100%}
@@ -28,417 +31,358 @@ body{
   margin:0;
   min-height:100vh;
   font-family:var(--body);
-  color:var(--plum);
+  color:var(--ink);
   background:
-    radial-gradient(circle at 12% 18%, var(--blush) 0%, transparent 40%),
-    radial-gradient(circle at 88% 12%, var(--lav) 0%, transparent 38%),
-    radial-gradient(circle at 85% 90%, var(--blush2) 0%, transparent 42%),
-    radial-gradient(circle at 10% 92%, var(--lav) 0%, transparent 38%),
-    var(--cream);
+    radial-gradient(ellipse at 50% -10%, rgba(255,235,190,.5) 0%, transparent 55%),
+    repeating-linear-gradient(0deg, rgba(90,60,20,.035) 0px, rgba(90,60,20,.035) 2px, transparent 2px, transparent 4px),
+    linear-gradient(180deg, var(--wood) 0%, var(--wood-deep) 100%);
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:28px 18px;
-  position:relative;
-  overflow-x:hidden;
+  padding:30px 16px;
 }
 
-/* floating hearts ambience */
-.float{
-  position:fixed;
-  bottom:-40px;
-  font-size:20px;
-  opacity:.35;
-  animation:floatUp linear infinite;
-  pointer-events:none;
-  z-index:0;
-  filter:saturate(0.8);
-}
-@keyframes floatUp{
-  to{ transform:translateY(-115vh) translateX(var(--drift,20px)) rotate(20deg); opacity:0; }
-}
-
-#card{
+/* wanted-poster board */
+#board{
   width:100%;
-  max-width:560px;
-  background:var(--white);
-  border:1px solid var(--line);
-  border-radius:28px;
-  padding:38px 34px 32px;
-  box-shadow:0 30px 60px -25px rgba(150,100,110,.35), 0 2px 0 rgba(255,255,255,.6) inset;
+  max-width:600px;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(120,80,30,.25), transparent 45%),
+    radial-gradient(circle at 90% 85%, rgba(120,80,30,.2), transparent 45%),
+    var(--paper);
+  border:10px solid var(--wood);
+  outline:2px solid var(--brass);
+  outline-offset:-16px;
+  border-radius:4px;
+  padding:34px 32px 28px;
   position:relative;
-  z-index:1;
-  animation:pop .5s cubic-bezier(.2,.8,.2,1);
+  box-shadow:0 30px 55px -20px rgba(0,0,0,.6), inset 0 0 60px rgba(90,55,20,.25);
 }
-@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
-
-#card::before{
+#board::before{
   content:"";
-  position:absolute; inset:-1px;
-  border-radius:29px;
-  padding:1px;
-  background:linear-gradient(135deg, var(--blush2), var(--lav));
-  -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite:xor;
-  mask-composite:exclude;
-  opacity:.6;
+  position:absolute; inset:0;
+  background-image:
+    radial-gradient(circle, rgba(80,50,20,.10) 1px, transparent 1.4px);
+  background-size:4px 4px;
   pointer-events:none;
+  mix-blend-mode:multiply;
+  opacity:.5;
 }
+.pin{
+  position:absolute; width:14px; height:14px; border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, #e8c66a, var(--brass) 70%);
+  box-shadow:0 2px 3px rgba(0,0,0,.5);
+}
+.pin.tl{top:-7px;left:18px} .pin.tr{top:-7px;right:18px}
 
 .eyebrow{
-  font-family:var(--body);
-  font-weight:800;
-  font-size:11.5px;
-  letter-spacing:.14em;
+  font-family:var(--type);
+  font-size:12px;
+  letter-spacing:.12em;
   text-transform:uppercase;
-  color:var(--coral-deep);
-  margin-bottom:6px;
-  display:flex;
-  align-items:center;
-  gap:6px;
+  color:var(--rust-deep);
+  text-align:center;
+  margin-bottom:2px;
 }
 h1{
   font-family:var(--display);
-  font-weight:600;
-  font-size:26px;
-  margin:0 0 10px;
-  color:var(--plum);
-  line-height:1.25;
+  font-size:34px;
+  text-align:center;
+  margin:2px 0 4px;
+  color:var(--ink);
+  letter-spacing:.02em;
+  text-shadow:1px 1px 0 rgba(255,255,255,.25);
 }
-.lede{
-  font-size:14.5px;
-  color:var(--plum-soft);
-  line-height:1.65;
+.sub{
+  font-family:var(--type);
+  font-size:13px;
+  text-align:center;
+  color:var(--ink-soft);
+  line-height:1.6;
   margin-bottom:6px;
 }
+hr.rope{
+  border:none;
+  height:6px;
+  margin:16px 0;
+  background:
+    repeating-linear-gradient(45deg, var(--leather) 0 3px, #8a5a30 3px 6px);
+  border-radius:3px;
+  opacity:.8;
+}
 .note{
-  font-size:12.5px;
-  color:var(--plum-soft);
-  background:linear-gradient(135deg,#faf1fb,#fdf3ee);
-  border:1px solid var(--line);
-  border-radius:14px;
-  padding:12px 14px;
-  margin-top:16px;
+  font-family:var(--type);
+  font-size:11.5px;
+  color:var(--ink-soft);
+  background:rgba(255,255,255,.25);
+  border:1px dashed var(--leather);
+  border-radius:6px;
+  padding:10px 12px;
+  margin-top:14px;
   line-height:1.6;
 }
 
-/* progress: soft heart-fill bar */
-#progwrap{margin:22px 0 8px}
-#proglabel{display:flex;justify-content:space-between;font-size:11.5px;color:var(--plum-soft);margin-bottom:6px;font-weight:700}
+/* progress: leather strap w/ brass fill */
+#progwrap{margin:18px 0 6px}
+#proglabel{
+  display:flex; justify-content:space-between;
+  font-family:var(--type); font-size:11px; color:var(--ink-soft); margin-bottom:5px;
+}
 #progbar{
-  height:12px;
-  background:#f4ece6;
-  border-radius:99px;
-  overflow:hidden;
-  border:1px solid var(--line);
-  position:relative;
+  height:14px; background:#c9ac78; border:2px solid var(--wood);
+  border-radius:3px; overflow:hidden; position:relative;
 }
 #progfill{
-  height:100%;
-  width:0;
-  border-radius:99px;
-  background:linear-gradient(90deg, var(--blush2), var(--coral), var(--lav-deep));
-  transition:width .45s cubic-bezier(.3,.8,.3,1);
+  height:100%; width:0%;
+  background:repeating-linear-gradient(90deg, var(--rust) 0 8px, var(--rust-deep) 8px 16px);
+  transition:width .4s ease;
 }
 
 h2.q{
   font-family:var(--display);
-  font-weight:500;
-  font-size:18.5px;
-  line-height:1.45;
-  margin:20px 0 16px;
-  color:var(--plum);
+  font-size:21px;
+  line-height:1.4;
+  margin:18px 0 16px;
+  color:var(--ink);
 }
 .opt{
-  display:flex;
-  align-items:flex-start;
-  gap:10px;
-  padding:13px 15px;
-  margin:9px 0;
-  background:#fdf8f4;
-  border:1.5px solid var(--line);
-  border-radius:16px;
+  display:flex; align-items:center; gap:10px;
+  padding:12px 14px; margin:9px 0;
+  background:rgba(255,250,235,.55);
+  border:2px solid var(--leather);
+  border-radius:5px;
   cursor:pointer;
-  transition:.18s ease;
-  font-size:14px;
-  line-height:1.5;
-}
-.opt:hover{border-color:var(--coral); background:#fff2ee; transform:translateY(-1px)}
-.opt input{margin-top:2px; accent-color:var(--coral-deep)}
-.opt.picked{border-color:var(--coral-deep); background:#fff0eb}
-
-.btnrow{margin-top:22px; display:flex; gap:10px; flex-wrap:wrap}
-button{
   font-family:var(--body);
-  font-weight:800;
-  font-size:14px;
-  padding:12px 22px;
-  border-radius:14px;
-  border:1.5px solid var(--line);
-  background:#fdf8f4;
-  color:var(--plum);
+  font-weight:600;
+  font-size:14.5px;
+  transition:.15s;
+  color:var(--ink);
+}
+.opt:hover{background:rgba(255,250,235,.85); transform:translateX(2px)}
+.opt.correct{border-color:var(--ok); background:#dfe9cf; color:var(--ok)}
+.opt.wrong{border-color:var(--bad); background:#ecd6cf; color:var(--bad)}
+.opt.disabled{pointer-events:none; opacity:.75}
+.opt .letter{
+  font-family:var(--display);
+  font-size:16px;
+  width:22px; text-align:center;
+  color:var(--rust-deep);
+}
+
+#feedback{
+  font-family:var(--type);
+  font-size:13px;
+  min-height:18px;
+  margin-top:4px;
+  color:var(--ink-soft);
+}
+
+.btnrow{margin-top:20px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center}
+button{
+  font-family:var(--display);
+  font-size:16px;
+  letter-spacing:.03em;
+  padding:11px 26px;
+  border-radius:5px;
+  border:2px solid var(--wood);
+  background:var(--paper-dark);
+  color:var(--ink);
   cursor:pointer;
-  transition:.18s ease;
+  transition:.15s;
 }
-button:hover{transform:translateY(-1px); box-shadow:0 8px 18px -10px rgba(180,120,120,.5)}
+button:hover{transform:translateY(-1px); box-shadow:0 6px 14px -6px rgba(0,0,0,.5)}
 button.primary{
-  background:linear-gradient(135deg, var(--coral), var(--coral-deep));
-  border-color:transparent;
-  color:#fff9f6;
+  background:linear-gradient(180deg, var(--rust), var(--rust-deep));
+  color:#f8ece0;
+  border-color:var(--wood-deep);
 }
-button.primary:hover{filter:brightness(1.04)}
-button.ghost{background:transparent}
-button:disabled{opacity:.45; cursor:not-allowed; transform:none; box-shadow:none}
+button:disabled{opacity:.4; cursor:not-allowed; transform:none; box-shadow:none}
 
 /* result */
-#resulticon{font-size:44px; line-height:1}
+#badge{
+  width:96px;height:96px;margin:6px auto 10px;
+  border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, #f0d488, var(--brass) 75%);
+  border:4px solid var(--wood);
+  display:flex;align-items:center;justify-content:center;
+  font-size:42px;
+  box-shadow:0 8px 18px -8px rgba(0,0,0,.5);
+}
 .result-name{
   font-family:var(--display);
   font-size:27px;
-  font-weight:600;
-  margin:6px 0 12px;
-  background:linear-gradient(135deg, var(--coral-deep), var(--lav-deep));
-  -webkit-background-clip:text;
-  background-clip:text;
-  color:transparent;
+  text-align:center;
+  margin:6px 0 6px;
+  color:var(--rust-deep);
 }
-.result-text{font-size:14.5px; line-height:1.75; color:var(--plum)}
-.tag{
-  display:inline-block;
-  font-size:11px;
-  font-weight:800;
-  letter-spacing:.05em;
-  text-transform:uppercase;
-  color:var(--lav-deep);
-  background:#f4eefb;
-  border:1px solid #e6d9f7;
-  padding:4px 10px;
-  border-radius:99px;
-  margin-bottom:14px;
+.score-line{
+  font-family:var(--type);
+  text-align:center;
+  font-size:13px;
+  color:var(--ink-soft);
+  margin-bottom:10px;
 }
+.result-text{font-size:14.5px; line-height:1.75; color:var(--ink)}
 </style>
 </head>
 <body>
 
-<div id="card"></div>
+<div id="board">
+  <div class="pin tl"></div><div class="pin tr"></div>
+  <div id="content"></div>
+</div>
 
 <script>
 const $ = s => document.querySelector(s);
-const card = $("#card");
+const content = $("#content");
 
-/* ambient floating hearts/flowers */
-(function ambience(){
-  const emojis = ["🌸","💛","🩷","✨","🌷","💜"];
-  setInterval(()=>{
-    const f=document.createElement("div");
-    f.className="float";
-    f.textContent = emojis[Math.floor(Math.random()*emojis.length)];
-    f.style.left = Math.random()*100+"vw";
-    f.style.setProperty("--drift",(Math.random()*80-40)+"px");
-    f.style.animationDuration = (9+Math.random()*8)+"s";
-    f.style.fontSize = (14+Math.random()*14)+"px";
-    document.body.appendChild(f);
-    setTimeout(()=> f.remove(), 18000);
-  }, 1400);
-})();
-
-/* ================= questions =================
-   Two rotating axis-sets, 15 questions each = 30 total.
-   SET A -> gender-of-attraction axis: HET, HOM, BI, PAN
-   SET B -> nature/intensity axis: ACE, DEMI, QUEER, QUEST
-*/
-const SETA = ["HET","HOM","BI","PAN"];
-const SETB = ["ACE","DEMI","QUEER","QUEST"];
-
-const qsA = [
-["quando vc pensa em uma pessoa que te atrai, o que vem primeiro?",
- ["alguém do gênero oposto ao meu","alguém do mesmo gênero que eu","pode ser dos dois, gosto dos dois","o gênero nem entra na conta — é a pessoa que importa"]],
-["seu primeiro crush foi...",
- ["do gênero oposto ao meu, bem clássico","do mesmo gênero que eu","tive crush dos dois lados, sem preferência","nem lembro de pensar em gênero, só na pessoa"]],
-["se pudesse escolher um crush de celebridade agora, seria...",
- ["alguém do gênero oposto","alguém do mesmo gênero","tenho uma lista dos dois, com certeza","várias pessoas diferentes — o gênero delas nunca foi o ponto"]],
-["num filme romântico, o casal que te emociona mais é...",
- ["homem e mulher, o clássico","duas pessoas do mesmo gênero","qualquer combinação, desde que a história seja boa","eu nem reparo no gênero dos personagens, só na conexão"]],
-["imaginando seu futuro, a pessoa ao seu lado é...",
- ["do gênero oposto ao meu","do mesmo gênero que eu","poderia ser dos dois, não fecho porta","sinceramente, não penso em gênero quando imagino isso"]],
-["quando alguém do mesmo gênero que vc flerta, vc...",
- ["fico sem graça, não é bem meu lance","fico super interessado(a)","gosto, é uma possibilidade real pra mim","gosto — mas de novo, gênero nunca foi o que me chamou atenção"]],
-["e quando é alguém do gênero oposto que flerta?",
- ["fico super interessado(a)","fico sem graça, não rola muito","gosto, é uma possibilidade real pra mim","gosto — mas o gênero não é o que pesa"]],
-["seus personagens fictícios favoritos pra shippar costumam ser...",
- ["casais héteros clássicos","casais do mesmo gênero","um pouco de tudo, sem padrão fixo","eu shippo pela química, nunca pelo gênero"]],
-["se te perguntassem 'menina ou menino', vc respiraria e diria...",
- ["tenho uma preferência clara por um lado","tenho uma preferência clara pelo outro lado","os dois, sinceramente","a pergunta em si meio que não faz sentido pra mim"]],
-["na sua rede social, as pessoas que vc mais dá aquela stalkeada costumam ser...",
- ["do gênero oposto ao meu","do mesmo gênero que eu","uma mistura bem equilibrada","eu nem penso nisso quando entro no perfil de alguém"]],
-["quando pensa em 'meu tipo', o que aparece?",
- ["um tipo bem definido, de gênero oposto","um tipo bem definido, do mesmo gênero","dois tipos bem diferentes, cada um de um gênero","um jeito de ser, mais do que uma aparência ou gênero"]],
-["se seus amigos tivessem que te apresentar alguém, diriam...",
- ["'gosta do time oposto, pode chamar quem quiser desse lado'","'curte o mesmo time, chama alguém parecido'","'gosta dos dois, pode chamar geral'","'nem liga pra esse critério, só manda'"]],
-["quando um casal do mesmo gênero se beija numa novela, vc...",
- ["acho bonito, mas não é algo que sinto na pele","sinto uma identificação bem forte","também sinto identificação, como sentiria com qualquer casal","sinto o mesmo de sempre — depende da cena, não do gênero"]],
-["e quando é um casal hétero?",
- ["sinto uma identificação bem forte","acho bonito, mas não é algo que sinto na pele","sinto identificação também, igual sentiria com outro tipo de casal","de novo: depende da cena, não do gênero"]],
-["se fosse resumir sua atração numa frase, seria...",
- ["'gosto do time oposto ao meu, sempre foi assim'","'gosto do meu próprio time, sempre foi assim'","'gosto dos dois times, sem hierarquia'","'eu gosto de pessoas — o time é o de menos'"]]
+/* ================= 25 questions, researched from the Bridger: WESTERN
+   Roblox game and its official/community wikis & guides ================= */
+const qs = [
+["Em qual plataforma o Bridger: WESTERN foi lançado?",
+ ["Steam","Roblox","itch.io","Epic Games"], 1],
+["Quem é a desenvolvedora do jogo?",
+ ["Rockstar Games","Mojang","BRIDGER INC.","Deltia's Gaming"], 2],
+["Em qual região o jogo se passa?",
+ ["Death Valley","Ridge B Valley","Sangre Valley","Copper Valley"], 1],
+["Ao criar o personagem, entre quais duas facções o jogador escolhe?",
+ ["Xerife ou Bandido","Outlaw ou Inlaw","Norte ou Sul","Vaqueiro ou Caçador"], 1],
+["Atualmente, a escolha de facção...",
+ ["muda completamente o estilo de jogo","não muda nada mecanicamente (ainda)","define seu Stand inicial","bloqueia certas armas"], 1],
+["Qual é o nome da moeda do jogo?",
+ ["Dollar","Moola","Gold Coin","Ridge Buck"], 1],
+["Qual é considerada a forma mais segura e confiável de ganhar dinheiro no começo do jogo?",
+ ["Duelos PvP","Pescaria","Assaltar trens","Vender cavalos"], 1],
+["Onde fica o principal ponto de pesca pra iniciantes?",
+ ["Rio Ridge","Lake Boullier","Swamp Lake","Red River"], 1],
+["Pescando, existe uma chance bem pequena (0,5%) de tirar qual item raro?",
+ ["Corpse Part","Arrow Shard","Stand Card","Dog Bane Herb"], 1],
+["Qual é o sistema de talentos passivos do jogo, obtido através de uma bruxa?",
+ ["Skills","Cards","Perks","Totems"], 1],
+["Onde o jogador vai para conseguir Cards?",
+ ["Outlaw Camp","A cabana da bruxa, no Swamp","Moe's Gun Store","A estação de trem"], 1],
+["Qual opção o jogador escolhe pra ler a sorte com a bruxa?",
+ ["\"draw a card\"","\"read my fortune\"","\"cast the bones\"","\"reveal my path\""], 1],
+["Qual é o número máximo de slots de Card, alcançado no Tier 3?",
+ ["1","2","3","5"], 2],
+["Quanto custa cada Card extra depois do primeiro (que é grátis)?",
+ ["20 Moola","50 Moola","100 Moola","450 Moola"], 1],
+["De qual obra as habilidades de \"Stand\" do jogo são inspiradas?",
+ ["Naruto","JoJo's Bizarre Adventure","Bleach","One Piece"], 1],
+["Quais são as duas formas principais de conseguir um Stand?",
+ ["Comprar na loja e completar quests","Corpse Parts e pescar Arrow Shards","Duelar com NPCs e votar em enquete","Subir de nível e trocar Moola"], 1],
+["O que aparece anunciado no servidor quando um Corpse Part surge no mapa?",
+ ["\"A stand awakens\"","\"It appears once again\"","\"The frontier calls\"","\"Beware the beam\""], 1],
+["Qual Stand é apontado como um dos mais difíceis de obter, exigindo 100 kills totais e um killstreak de 10?",
+ ["Star Platinum: The World","King Crimson","D4C","Tusk Act 1"], 2],
+["Qual habilidade, ativada pela tecla X, está ligada à precisão de mira?",
+ ["Fists","Ocular Prowess","Quick Dash","Block"], 1],
+["Quais três Cards, combinados, aumentam bastante o Ocular PRO (assistência de mira)?",
+ ["High Noon, Evil Eye e FAUX High Noon","Quick Draw, Steady Hand e Third Eye","Dead Aim, True Sight e Iron Will","Sharp Shot, Falcon Eye e Last Stand"], 0],
+["O que acontece com seu personagem ao longo do tempo, por morte ou combat logging?",
+ ["Ele fica mais forte","Ele envelhece","Ele perde o Stand automaticamente","Ele muda de facção"], 1],
+["Qual erva ajuda a rejuvenescer o personagem?",
+ ["Dogbane (Dog Bane Herb)","Ridge Root","Swamp Moss","Desert Sage"], 0],
+["Se o jogador faz \"combat log\" (sai do jogo durante uma luta), o que acontece?",
+ ["Nada, é seguro","Ele envelhece 10 anos instantaneamente","Perde todas as cartas","É banido permanentemente"], 1],
+["Para que serve a tecla H no jogo?",
+ ["Abrir o inventário","Invocar/desinvocar o cavalo","Recarregar a arma","Abrir o menu de estatísticas"], 1],
+["Onde o jogador pode pagar pra \"rerolar\" e conseguir um cavalo melhor?",
+ ["Moe's Gun Store","A estação de trem em Ridge B County","Lake Boullier","Outlaw Camp"], 1]
 ];
 
-const qsB = [
-["como costuma ser sua atração por alguém?",
- ["raramente sinto esse tipo de atração por alguém","só sinto depois de criar um vínculo forte","sinto, mas não quero encaixar isso num rótulo fixo","sinceramente, ainda tô tentando entender isso em mim"]],
-["quando alguém 'bonito(a)' passa por vc na rua...",
- ["reconheço que é bonito(a), mas não sinto nada além disso","acho bonito(a), mas não sinto atração sem te conhecer","pode rolar uma faísca, mas prefiro não nomear o que é","às vezes sinto, às vezes não — e isso me deixa em dúvida"]],
-["seus amigos falam de crush toda hora e vc...",
- ["meio que não entendo essa empolgação toda","só entendo quando é alguém que eu já conheço bem","entendo, mas minha forma de sentir é meio diferente da deles","entendo, mas ainda não sei nomear o que eu sinto"]],
-["pra rolar interesse romântico por alguém, o mais importante pra vc é...",
- ["sinceramente, raramente sinto essa vontade","tempo e confiança construída primeiro","não sei bem — e tá tudo certo em não saber","ainda tô descobrindo o que me atrai de verdade"]],
-["quando pensa em rótulos como 'hétero', 'gay', 'bi'...",
- ["nenhum deles parece te descrever, e tá tudo bem","sente que talvez um rótulo mais específico caiba com o tempo","prefere não escolher nenhum, e não sente falta disso","ainda tá tentando achar qual (se algum) combina com vc"]],
-["conhecer alguém 'à primeira vista' e já sentir atração é...",
- ["algo que quase nunca acontece com vc","algo raro — geralmente precisa de tempo","acontece, mas o rótulo disso te importa pouco","às vezes sim, às vezes não, e vc ainda não entendeu o padrão"]],
-["seus amigos comentam que vc é meio 'difícil de ler' quando o assunto é crush?",
- ["sim, porque sinceramente eu quase não tenho","sim, porque só desenvolvo depois de um tempo","sim, e eu gosto de ser um mistério, sem rótulo","sim, porque eu mesmo(a) ainda não me entendi direito"]],
-["quando alguém te chama pra sair do nada...",
- ["fico sem saber por que estão interessados, não penso muito nisso","preciso conhecer melhor antes de saber se topo","topo numa boa, sem muito planejamento ou rótulo","topo, mas fico me perguntando o que realmente sinto depois"]],
-["sobre pensar em namoro no futuro, vc...",
- ["não sente muita falta ou necessidade disso","só imagina isso com alguém que já é próximo","imagina, mas sem se prender a definições","imagina, mas ainda não sabe muito bem o que procura"]],
-["quando um amigo pergunta 'você não curte ninguém?'...",
- ["respondo que realmente não é algo que sinto com frequência","respondo que só curto quando já conheço bem a pessoa","respondo que curto, só não gosto de rotular o que sinto","respondo que não sei, e que tá tudo bem não saber"]],
-["seu jeito de amar costuma ser mais...",
- ["voltado pra amizade e conexão do que pra romance","lento, construído aos poucos","fluido, muda dependendo da fase da vida","ainda incerto — e vc tá se permitindo descobrir com calma"]],
-["se sua forma de amar fosse uma estação do ano, seria...",
- ["inverno calmo, tranquilo, sem pressa de nada","primavera, que desabrocha aos poucos","uma estação que muda o tempo todo, imprevisível","uma estação ainda indefinida, tipo um dia de sol e chuva"]],
-["quando pensa em intimidade física, vc...",
- ["não sente muita necessidade ou vontade disso","só sente vontade depois de um vínculo emocional forte","sente vontade, mas não liga de rotular isso","tem sentimentos meio confusos sobre isso, e tá explorando"]],
-["sobre testes como esse, vc pensa...",
- ["'só de fazer já é mais do que eu costumo pensar nisso'","'preciso de mais tempo pra ter certeza de qualquer resposta'","'gosto de testes assim, mas não preciso do resultado pra me definir'","'talvez esse teste me ajude a entender um pouco melhor'"]],
-["se pudesse escolher não ter que rotular nada, vc...",
- ["ficaria aliviado(a) — rótulo nunca fez muito sentido pra vc","tudo bem, mas ainda gosta de entender seus próprios padrões","escolheria isso na hora, rótulo fixo não é sua praia","gostaria, mas também sente curiosidade de descobrir um nome pra isso"]]
-];
+const state = { i:0, score:0, locked:false };
 
-// build final 30-question list, alternating A/B
-const questions = [];
-for(let i=0;i<15;i++){
-  questions.push({q:qsA[i][0], opts:qsA[i][1], cats:SETA});
-  questions.push({q:qsB[i][0], opts:qsB[i][1], cats:SETB});
-}
-
-/* ================= results ================= */
-const results = {
-  HET: {
-    icon:"🌻", name:"Heterossexualidade",
-    text:"Parece que sua atração aponta pra pessoas de gênero diferente do seu, de um jeito bem consistente. É uma vivência tão válida quanto qualquer outra — sentir com clareza também é bonito."
-  },
-  HOM: {
-    icon:"🌊", name:"Homossexualidade",
-    text:"Suas respostas mostram uma atração forte e constante por pessoas do mesmo gênero que o seu. Se isso já era algo que vc sentia, talvez esse teste seja só um espelhinho confirmando o que seu coração já sabia."
-  },
-  BI: {
-    icon:"🌈", name:"Bissexualidade",
-    text:"Vc sente atração por mais de um gênero, sem uma regra fixa de qual pesa mais. Isso não é 'estar em cima do muro' — é sentir de verdade por caminhos diferentes, e os dois são igualmente reais."
-  },
-  PAN: {
-    icon:"💫", name:"Pansexualidade",
-    text:"Pelo que vc respondeu, gênero simplesmente não é o filtro pelo qual sua atração passa — é a pessoa, a energia, a conexão. Isso tem nome, e o nome é pansexualidade."
-  },
-  ACE: {
-    icon:"🤍", name:"Assexualidade",
-    text:"Sua atração desse tipo parece pouco frequente ou ausente, e isso não é um problema a resolver — é só um jeito diferente (e válido) de existir e amar. Existem tantas formas de conexão além dessa."
-  },
-  DEMI: {
-    icon:"🌱", name:"Demissexualidade",
-    text:"Pra vc, a atração parece nascer depois — de um vínculo, de confiança, de tempo junto. Não é frieza, é só um ritmo diferente: seu coração gosta de conhecer antes de sentir."
-  },
-  QUEER: {
-    icon:"🦋", name:"Queer / Fluido(a)",
-    text:"Suas respostas resistem a caber numa caixinha só, e tudo bem — talvez 'queer' ou 'fluido' sejam as palavras que mais abraçam quem vc é: alguém que sente sem precisar de um mapa fixo."
-  },
-  QUEST: {
-    icon:"🌤️", name:"Ainda Descobrindo",
-    text:"E olha, isso também é uma resposta válida. Não ter certeza agora não é atraso nem defeito — é só uma fase do caminho. Você tem todo o tempo do mundo pra ir se entendendo, sem pressa."
-  }
-};
-
-/* ================= state & scoring ================= */
-const state = { i:0, scores:{HET:0,HOM:0,BI:0,PAN:0,ACE:0,DEMI:0,QUEER:0,QUEST:0} };
-
-/* ================= screens ================= */
 function renderIntro(){
-  card.innerHTML = `
-    <div class="eyebrow">🌷 teste carinhoso</div>
-    <h1>vamos descobrir, com calma,<br>um pouco mais sobre você?</h1>
-    <p class="lede">30 perguntinhas sobre atração, crushes e sentimentos — sem certo ou errado, só um espaço seguro pra refletir sobre quem você é.</p>
-    <div class="note">💛 esse teste é só um carinho, não um veredito. só você sabe de verdade quem você é — e não tem nenhuma pressa pra ter certeza de nada.</div>
+  content.innerHTML = `
+    <div class="eyebrow">☆ procurado por conhecimento ☆</div>
+    <h1>Quiz do Frontier:<br>Bridger WESTERN</h1>
+    <p class="sub">25 perguntas pra saber se vc é um verdadeiro forasteiro de Ridge B Valley ou só mais um caipira perdido.</p>
+    <hr class="rope">
+    <div class="note">🤠 cada pergunta tem só uma resposta certa. escolhe rápido, pistoleiro — o sol não espera por ninguém.</div>
     <div class="btnrow">
-      <button class="primary" id="start">vamos começar</button>
+      <button class="primary" id="start">sacar o revólver e começar</button>
     </div>
   `;
-  $("#start").onclick = ()=>{ state.i=0; draw(); };
+  $("#start").onclick = ()=>{ state.i=0; state.score=0; draw(); };
 }
 
 function draw(){
-  const total = questions.length;
+  state.locked = false;
+  const total = qs.length;
   const pct = Math.round(state.i/total*100);
-  const cur = questions[state.i];
+  const [qtext, opts, correctIdx] = qs[state.i];
 
-  card.innerHTML = `
+  content.innerHTML = `
     <div id="progwrap">
-      <div id="proglabel"><span>pergunta ${state.i+1} de ${total}</span><span>${pct}%</span></div>
+      <div id="proglabel"><span>pergunta ${state.i+1} de ${total}</span><span>acertos: ${state.score}</span></div>
       <div id="progbar"><div id="progfill" style="width:${pct}%"></div></div>
     </div>
-    <h2 class="q">${cur.q}</h2>
+    <h2 class="q">${qtext}</h2>
     <div id="opts"></div>
-    <div class="btnrow">
-      <button class="primary" id="nextbtn" disabled>próxima</button>
-      ${state.i>0 ? '<button class="ghost" id="backbtn">voltar</button>' : ''}
-    </div>
+    <div id="feedback"></div>
+    <div class="btnrow"><button class="primary" id="nextbtn" disabled>próxima</button></div>
   `;
 
-  const opts = $("#opts");
-  cur.opts.forEach((text, n)=>{
-    const label = document.createElement("label");
-    label.className = "opt";
-    label.innerHTML = `<input type="radio" name="a" value="${cur.cats[n]}"> <span>${text}</span>`;
-    label.addEventListener("click", ()=>{
-      document.querySelectorAll(".opt").forEach(o=> o.classList.remove("picked"));
-      label.classList.add("picked");
-      $("#nextbtn").disabled = false;
-    });
-    opts.appendChild(label);
+  const optsEl = $("#opts");
+  const letters = ["A","B","C","D"];
+  opts.forEach((text,n)=>{
+    const el = document.createElement("div");
+    el.className = "opt";
+    el.innerHTML = `<span class="letter">${letters[n]}</span><span>${text}</span>`;
+    el.addEventListener("click", ()=> pick(n, correctIdx, el));
+    optsEl.appendChild(el);
   });
 
-  if(state.i>0){
-    $("#backbtn").onclick = ()=>{ state.i--; draw(); };
-  }
   $("#nextbtn").onclick = ()=>{
-    const c = document.querySelector("input[name=a]:checked");
-    if(!c) return;
-    state.scores[c.value]++;
     state.i++;
     if(state.i>=total){ showResult(); return; }
     draw();
   };
 }
 
-function showResult(){
-  let top = "HET";
-  for(const k in state.scores){ if(state.scores[k] > state.scores[top]) top = k; }
-  const tied = Object.keys(state.scores).filter(k=> state.scores[k]===state.scores[top]);
-  const chosen = tied[Math.floor(Math.random()*tied.length)];
-  const r = results[chosen];
+function pick(n, correctIdx, el){
+  if(state.locked) return;
+  state.locked = true;
+  const opts = document.querySelectorAll(".opt");
+  opts.forEach(o=> o.classList.add("disabled"));
 
-  card.innerHTML = `
-    <div class="eyebrow">🌷 seu resultado</div>
-    <div id="resulticon">${r.icon}</div>
-    <div class="tag">com carinho, pra você</div>
+  if(n===correctIdx){
+    el.classList.add("correct");
+    state.score++;
+    $("#feedback").textContent = "acertou! bom faro, cowboy.";
+  }else{
+    el.classList.add("wrong");
+    opts[correctIdx].classList.add("correct");
+    $("#feedback").textContent = "errou essa — mas segue o rastro.";
+  }
+  $("#proglabel").innerHTML = `<span>pergunta ${state.i+1} de ${qs.length}</span><span>acertos: ${state.score}</span>`;
+  $("#nextbtn").disabled = false;
+}
+
+function rankFor(score){
+  if(score<=4) return {icon:"🥾", name:"Caipira Perdido", text:"Vc mal sabe distinguir um cavalo de uma mula, mas todo forasteiro começa em algum lugar. Volta pro saloon, estuda o trilho dos trens e tenta de novo."};
+  if(score<=9) return {icon:"🐎", name:"Aprendiz de Cowboy", text:"Já sabe onde fica o Lake Boullier e não se perde tanto assim — mas Ridge B Valley ainda guarda segredos que vc não desconfia."};
+  if(score<=14) return {icon:"🔫", name:"Pistoleiro Errante", text:"Vc conhece o jogo de verdade: sabe de Moola, Cards e onde a bruxa lê a sorte. Falta só afiar a mira nos detalhes mais obscuros."};
+  if(score<=19) return {icon:"⭐", name:"Forasteiro Respeitado", text:"Poucos sabem tanto quanto vc sobre Stands, envelhecimento e a economia da fronteira. Seu nome já circula pelos becos de Ridge B County."};
+  if(score<=23) return {icon:"💀", name:"Lenda de Ridge B Valley", text:"Vc domina quase tudo: Corpse Parts, Ocular Prowess, os segredos do Dog Bane. Poucos duelam com vc e vivem pra contar."};
+  return {icon:"👑", name:"Lenda Absoluta da Fronteira", text:"Gabarito perfeito. Vc não jogou Bridger: WESTERN — vc viveu nele. Ridge B Valley deveria erguer uma estátua sua na praça."};
+}
+
+function showResult(){
+  const r = rankFor(state.score);
+  content.innerHTML = `
+    <div class="eyebrow">☆ veredito do xerife ☆</div>
+    <div id="badge">${r.icon}</div>
     <div class="result-name">${r.name}</div>
+    <div class="score-line">${state.score} de ${qs.length} acertos</div>
+    <hr class="rope">
     <p class="result-text">${r.text}</p>
-    <div class="note">💛 lembrete gentil: nenhum teste te define de verdade. você é quem você sente que é, no seu tempo, do seu jeito — isso aqui é só um mimo pra pensar sobre si com carinho.</div>
     <div class="btnrow">
-      <button class="primary" id="restart">refazer o teste</button>
+      <button class="primary" id="restart">encarar o quiz de novo</button>
     </div>
   `;
-  $("#restart").onclick = ()=>{ state.i=0; for(const k in state.scores) state.scores[k]=0; renderIntro(); };
+  $("#restart").onclick = ()=>{ renderIntro(); };
 }
 
 renderIntro();
