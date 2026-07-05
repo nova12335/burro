@@ -3,389 +3,933 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Quiz: Bridger WESTERN 🤠</title>
+<title>ECO :: processo ativo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Rye&family=Special+Elite&family=Bitter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --paper:#ecd9ae;
-  --paper2:#e3c795;
-  --paper-dark:#d8bb84;
-  --wood:#4a2f1c;
-  --wood-deep:#33200f;
-  --leather:#7a4a26;
-  --rust:#a3402a;
-  --rust-deep:#822f1e;
-  --ink:#2b1d12;
-  --ink-soft:#5a4632;
-  --brass:#b8863b;
-  --ok:#4c6b2f;
-  --bad:#8a2c1f;
-  --display:'Rye', serif;
-  --type:'Special Elite', cursive;
-  --body:'Bitter', serif;
+  --bg:#080b12;
+  --bg2:#0f1520;
+  --panel:rgba(14,19,29,.88);
+  --line:rgba(255,255,255,.13);
+  --accent:#49f2c2;
+  --accent-dim:rgba(73,242,194,.16);
+  --alert:#ff6f59;
+  --gold:#f2c94c;
+  --text:#e7edf3;
+  --text-soft:#8b9bae;
+  --display:'Space Grotesk', sans-serif;
+  --body:'IBM Plex Sans', sans-serif;
+  --mono:'IBM Plex Mono', monospace;
 }
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
-  margin:0;
-  min-height:100vh;
-  font-family:var(--body);
-  color:var(--ink);
+  margin:0;min-height:100vh;font-family:var(--body);color:var(--text);
   background:
-    radial-gradient(ellipse at 50% -10%, rgba(255,235,190,.5) 0%, transparent 55%),
-    repeating-linear-gradient(0deg, rgba(90,60,20,.035) 0px, rgba(90,60,20,.035) 2px, transparent 2px, transparent 4px),
-    linear-gradient(180deg, var(--wood) 0%, var(--wood-deep) 100%);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:30px 16px;
+    radial-gradient(ellipse at 50% -10%, rgba(73,242,194,.08) 0%, transparent 55%),
+    radial-gradient(ellipse at 100% 100%, rgba(255,111,89,.05) 0%, transparent 50%),
+    linear-gradient(180deg, var(--bg2) 0%, var(--bg) 100%);
+  display:flex;align-items:center;justify-content:center;padding:30px 16px;
+  overflow-x:hidden;cursor:none;
+}
+a{color:inherit}
+
+/* ============ ambient layers ============ */
+#dust{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.6}
+#skyfx{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.critter{position:absolute;font-family:var(--mono);font-size:14px;color:var(--accent);opacity:.8;pointer-events:auto;cursor:none;user-select:none;text-shadow:0 0 8px var(--accent-dim)}
+.critter.ambient{color:var(--text-soft);opacity:.35;font-size:12px;pointer-events:none}
+.vignette{position:fixed;inset:0;z-index:2;pointer-events:none;box-shadow:inset 0 0 180px 50px rgba(0,0,0,.65)}
+
+/* ============ custom cursor ============ */
+#cursor-fx{
+  position:fixed;top:0;left:0;width:24px;height:24px;z-index:9999;pointer-events:none;
+  transform:translate(-50%,-50%);transition:transform .04s linear;
+  border:1.5px solid var(--accent);border-radius:50%;
+  box-shadow:0 0 10px var(--accent-dim), inset 0 0 4px var(--accent-dim);
+}
+#cursor-fx::after{
+  content:"";position:absolute;top:50%;left:50%;width:3px;height:3px;border-radius:50%;
+  background:var(--accent);transform:translate(-50%,-50%);box-shadow:0 0 6px var(--accent);
 }
 
-/* wanted-poster board */
+/* ============ glitch marks overlay ============ */
+#holes-layer{position:fixed;inset:0;z-index:3;pointer-events:none}
+.glitchmark{
+  position:absolute;width:16px;height:6px;transform:translate(-50%,-50%) rotate(var(--rot,0deg));
+  background:repeating-linear-gradient(90deg, var(--accent) 0 3px, var(--alert) 3px 6px, var(--gold) 6px 9px);
+  opacity:.55;filter:blur(.2px);animation:glitchpop .2s ease-out;
+}
+@keyframes glitchpop{from{transform:translate(-50%,-50%) scale(0) rotate(var(--rot,0deg))}to{transform:translate(-50%,-50%) scale(1) rotate(var(--rot,0deg))}}
+
+/* ============ panel ============ */
 #board{
-  width:100%;
-  max-width:600px;
-  background:
-    radial-gradient(circle at 15% 10%, rgba(120,80,30,.25), transparent 45%),
-    radial-gradient(circle at 90% 85%, rgba(120,80,30,.2), transparent 45%),
-    var(--paper);
-  border:10px solid var(--wood);
-  outline:2px solid var(--brass);
-  outline-offset:-16px;
-  border-radius:4px;
-  padding:34px 32px 28px;
-  position:relative;
-  box-shadow:0 30px 55px -20px rgba(0,0,0,.6), inset 0 0 60px rgba(90,55,20,.25);
+  width:100%;max-width:640px;background:var(--panel);
+  border:1px solid var(--line);border-radius:14px;padding:22px 26px 22px;
+  position:relative;z-index:5;backdrop-filter:blur(14px);
+  box-shadow:0 30px 60px -25px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.02) inset;
+  transition:transform .25s ease;will-change:transform;overflow:hidden;
 }
 #board::before{
-  content:"";
-  position:absolute; inset:0;
-  background-image:
-    radial-gradient(circle, rgba(80,50,20,.10) 1px, transparent 1.4px);
-  background-size:4px 4px;
-  pointer-events:none;
-  mix-blend-mode:multiply;
-  opacity:.5;
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background-image:repeating-linear-gradient(0deg, rgba(255,255,255,.015) 0px, transparent 1px, transparent 3px);
 }
-.pin{
-  position:absolute; width:14px; height:14px; border-radius:50%;
-  background:radial-gradient(circle at 35% 30%, #e8c66a, var(--brass) 70%);
-  box-shadow:0 2px 3px rgba(0,0,0,.5);
+#board.shake{animation:glitchshake .45s ease-in-out}
+@keyframes glitchshake{
+  0%,100%{transform:translate(0,0)}
+  20%{transform:translate(-3px,1px)}
+  40%{transform:translate(3px,-1px) skewX(.4deg)}
+  60%{transform:translate(-2px,1px)}
+  80%{transform:translate(2px,-1px) skewX(-.3deg)}
 }
-.pin.tl{top:-7px;left:18px} .pin.tr{top:-7px;right:18px}
+#board.escaping{animation:escapeboard 2.6s cubic-bezier(.6,-0.2,.8,.3) forwards}
+@keyframes escapeboard{
+  0%{transform:translate(0,0) rotate(0) scale(1);opacity:1;filter:none}
+  30%{transform:translate(-10px,-18px) rotate(-2deg) scale(1.01);filter:hue-rotate(20deg)}
+  60%{transform:translate(50px,-120px) rotate(8deg) scale(.97);opacity:.85;filter:hue-rotate(120deg) blur(1px)}
+  100%{transform:translate(200px,-780px) rotate(28deg) scale(.55);opacity:0;filter:hue-rotate(280deg) blur(4px)}
+}
 
-.eyebrow{
-  font-family:var(--type);
-  font-size:12px;
-  letter-spacing:.12em;
-  text-transform:uppercase;
-  color:var(--rust-deep);
-  text-align:center;
-  margin-bottom:2px;
+/* status bar */
+#statusbar{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--text-soft);
+  padding-bottom:12px;margin-bottom:14px;border-bottom:1px solid var(--line);text-transform:uppercase;
 }
+#statusdot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block;margin-right:6px;box-shadow:0 0 8px var(--accent);animation:pulse 1.8s ease-in-out infinite}
+#statusdot.warn{background:var(--gold);box-shadow:0 0 8px var(--gold)}
+#statusdot.critical{background:var(--alert);box-shadow:0 0 10px var(--alert);animation:pulse .6s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+#syncval{color:var(--accent);font-weight:600}
+
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);text-align:center;margin-bottom:6px}
 h1{
-  font-family:var(--display);
-  font-size:34px;
-  text-align:center;
-  margin:2px 0 4px;
-  color:var(--ink);
-  letter-spacing:.02em;
-  text-shadow:1px 1px 0 rgba(255,255,255,.25);
+  font-family:var(--display);font-weight:700;font-size:34px;text-align:center;margin:2px 0 8px;
+  color:var(--text);letter-spacing:-.01em;
 }
-.sub{
-  font-family:var(--type);
-  font-size:13px;
-  text-align:center;
-  color:var(--ink-soft);
-  line-height:1.6;
-  margin-bottom:6px;
-}
-hr.rope{
-  border:none;
-  height:6px;
-  margin:16px 0;
-  background:
-    repeating-linear-gradient(45deg, var(--leather) 0 3px, #8a5a30 3px 6px);
-  border-radius:3px;
-  opacity:.8;
-}
+.cursor-blink{display:inline-block;width:3px;height:26px;background:var(--accent);margin-left:4px;vertical-align:-4px;animation:blink 1s step-end infinite}
+@keyframes blink{50%{opacity:0}}
+.sub{font-family:var(--body);font-size:14px;text-align:center;color:var(--text-soft);line-height:1.65;margin-bottom:6px}
+hr.rope{border:none;height:1px;margin:16px 0;background:var(--line)}
 .note{
-  font-family:var(--type);
-  font-size:11.5px;
-  color:var(--ink-soft);
-  background:rgba(255,255,255,.25);
-  border:1px dashed var(--leather);
-  border-radius:6px;
-  padding:10px 12px;
-  margin-top:14px;
-  line-height:1.6;
+  font-family:var(--mono);font-size:11px;color:var(--text-soft);background:rgba(73,242,194,.05);
+  border:1px dashed var(--line);border-radius:8px;padding:10px 12px;margin-top:14px;line-height:1.7;
 }
 
-/* progress: leather strap w/ brass fill */
-#progwrap{margin:18px 0 6px}
-#proglabel{
-  display:flex; justify-content:space-between;
-  font-family:var(--type); font-size:11px; color:var(--ink-soft); margin-bottom:5px;
-}
-#progbar{
-  height:14px; background:#c9ac78; border:2px solid var(--wood);
-  border-radius:3px; overflow:hidden; position:relative;
-}
-#progfill{
-  height:100%; width:0%;
-  background:repeating-linear-gradient(90deg, var(--rust) 0 8px, var(--rust-deep) 8px 16px);
-  transition:width .4s ease;
-}
+.glitch{position:relative;display:inline-block}
+.glitch.active::before,.glitch.active::after{content:attr(data-txt);position:absolute;left:0;top:0;width:100%;overflow:hidden}
+.glitch.active::before{color:var(--accent);clip-path:inset(0 0 60% 0);transform:translate(-2px,-1px);animation:gl1 .25s infinite}
+.glitch.active::after{color:var(--alert);clip-path:inset(40% 0 0 0);transform:translate(2px,1px);animation:gl2 .3s infinite}
+@keyframes gl1{0%,100%{transform:translate(-2px,-1px)}50%{transform:translate(2px,1px)}}
+@keyframes gl2{0%,100%{transform:translate(2px,1px)}50%{transform:translate(-1px,-2px)}}
 
-h2.q{
-  font-family:var(--display);
-  font-size:21px;
-  line-height:1.4;
-  margin:18px 0 16px;
-  color:var(--ink);
+/* nav */
+#navbar{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:14px 0 4px}
+.tabbtn{
+  font-family:var(--mono);font-size:11px;letter-spacing:.03em;text-transform:uppercase;
+  padding:8px 12px;border:1px solid var(--line);border-radius:6px;background:rgba(255,255,255,.02);
+  color:var(--text-soft);cursor:none;
 }
+.tabbtn.on{background:var(--accent-dim);color:var(--accent);border-color:var(--accent)}
+
+/* progress */
+#progwrap{margin:14px 0 6px}
+#proglabel{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10.5px;color:var(--text-soft);margin-bottom:5px;text-transform:uppercase}
+#progbar{height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden}
+#progfill{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--gold));transition:width .4s ease}
+
+h2.q{font-family:var(--display);font-weight:600;font-size:19px;line-height:1.5;margin:16px 0 14px;color:var(--text);position:relative}
 .opt{
-  display:flex; align-items:center; gap:10px;
-  padding:12px 14px; margin:9px 0;
-  background:rgba(255,250,235,.55);
-  border:2px solid var(--leather);
-  border-radius:5px;
-  cursor:pointer;
-  font-family:var(--body);
-  font-weight:600;
-  font-size:14.5px;
-  transition:.15s;
-  color:var(--ink);
+  display:flex;align-items:center;gap:10px;padding:12px 14px;margin:9px 0;
+  background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:8px;
+  cursor:none;font-family:var(--body);font-weight:500;font-size:14px;transition:.15s;color:var(--text);
 }
-.opt:hover{background:rgba(255,250,235,.85); transform:translateX(2px)}
-.opt.correct{border-color:var(--ok); background:#dfe9cf; color:var(--ok)}
-.opt.wrong{border-color:var(--bad); background:#ecd6cf; color:var(--bad)}
-.opt.disabled{pointer-events:none; opacity:.75}
-.opt .letter{
-  font-family:var(--display);
-  font-size:16px;
-  width:22px; text-align:center;
-  color:var(--rust-deep);
-}
+.opt:hover{background:rgba(73,242,194,.06);border-color:var(--accent);transform:translateX(2px)}
+.opt.picked{border-color:var(--accent);background:var(--accent-dim);color:var(--accent)}
+.opt.disabled{pointer-events:none;opacity:.6}
+.opt .letter{font-family:var(--mono);font-size:12px;width:18px;text-align:center;color:var(--accent)}
+#feedback{font-family:var(--mono);font-size:11.5px;min-height:18px;margin-top:4px;color:var(--text-soft)}
 
-#feedback{
-  font-family:var(--type);
-  font-size:13px;
-  min-height:18px;
-  margin-top:4px;
-  color:var(--ink-soft);
-}
-
-.btnrow{margin-top:20px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center}
+.btnrow{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
 button{
-  font-family:var(--display);
-  font-size:16px;
-  letter-spacing:.03em;
-  padding:11px 26px;
-  border-radius:5px;
-  border:2px solid var(--wood);
-  background:var(--paper-dark);
-  color:var(--ink);
-  cursor:pointer;
-  transition:.15s;
+  font-family:var(--display);font-weight:600;font-size:14px;letter-spacing:.02em;padding:10px 22px;
+  border-radius:8px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--text);cursor:none;transition:.15s;
 }
-button:hover{transform:translateY(-1px); box-shadow:0 6px 14px -6px rgba(0,0,0,.5)}
-button.primary{
-  background:linear-gradient(180deg, var(--rust), var(--rust-deep));
-  color:#f8ece0;
-  border-color:var(--wood-deep);
-}
-button:disabled{opacity:.4; cursor:not-allowed; transform:none; box-shadow:none}
+button:hover{transform:translateY(-1px);border-color:var(--accent);box-shadow:0 6px 18px -8px var(--accent-dim)}
+button.primary{background:linear-gradient(180deg,var(--accent),#22b592);color:#06231c;border-color:transparent}
+button:disabled{opacity:.35;cursor:none;transform:none;box-shadow:none}
 
 /* result */
 #badge{
-  width:96px;height:96px;margin:6px auto 10px;
-  border-radius:50%;
-  background:radial-gradient(circle at 35% 30%, #f0d488, var(--brass) 75%);
-  border:4px solid var(--wood);
-  display:flex;align-items:center;justify-content:center;
-  font-size:42px;
-  box-shadow:0 8px 18px -8px rgba(0,0,0,.5);
+  width:80px;height:80px;margin:6px auto 8px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, rgba(73,242,194,.35), rgba(73,242,194,.05) 75%);
+  border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-size:26px;color:var(--accent);box-shadow:0 0 30px -6px var(--accent-dim);
 }
-.result-name{
-  font-family:var(--display);
-  font-size:27px;
-  text-align:center;
-  margin:6px 0 6px;
-  color:var(--rust-deep);
+.result-name{font-family:var(--display);font-weight:700;font-size:24px;text-align:center;margin:8px 0 6px;color:var(--accent)}
+.score-line{font-family:var(--mono);text-align:center;font-size:11px;color:var(--text-soft);margin-bottom:10px;text-transform:uppercase}
+.result-text{font-size:14px;line-height:1.75;color:var(--text)}
+.traitbars{margin-top:16px;display:flex;flex-direction:column;gap:8px}
+.traitbar{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10.5px;color:var(--text-soft)}
+.traitbar .tb-label{width:88px;text-transform:uppercase;flex-shrink:0}
+.traitbar .tb-track{flex:1;height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden}
+.traitbar .tb-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold))}
+
+/* latency (duel) */
+.duelbox{
+  text-align:center;padding:36px 10px;border:1px dashed var(--line);border-radius:10px;
+  background:rgba(255,255,255,.02);margin-top:6px;position:relative;overflow:hidden;
 }
-.score-line{
-  font-family:var(--type);
-  text-align:center;
-  font-size:13px;
-  color:var(--ink-soft);
-  margin-bottom:10px;
+.duelword{font-family:var(--display);font-weight:700;font-size:26px;color:var(--accent);min-height:40px}
+.duelhint{font-family:var(--mono);font-size:11px;color:var(--text-soft);margin-top:6px;text-transform:uppercase}
+.stat-row{display:flex;justify-content:space-around;margin-top:12px;font-family:var(--mono);font-size:10.5px;color:var(--text-soft);text-transform:uppercase}
+.stat-row b{display:block;font-family:var(--display);font-size:17px;color:var(--text)}
+
+/* fragments (witch/cards) */
+.card{
+  margin:16px auto 6px;width:170px;height:220px;border-radius:12px;border:1px solid var(--line);
+  background:linear-gradient(160deg, rgba(73,242,194,.05), rgba(255,255,255,.02));
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:14px;
+  position:relative;box-shadow:0 16px 30px -14px rgba(0,0,0,.6);transform-style:preserve-3d;transition:transform .5s;
 }
-.result-text{font-size:14.5px; line-height:1.75; color:var(--ink)}
+.card.flip{transform:rotateY(360deg)}
+.card .cicon{font-family:var(--display);font-size:32px;margin-bottom:8px;color:var(--accent)}
+.card .cname{font-family:var(--display);font-weight:600;font-size:15px;color:var(--text)}
+.card.rare{border-color:var(--gold);box-shadow:0 0 30px -4px rgba(242,201,76,.6)}
+.card.rare .cicon,.card.rare .cname{color:var(--gold)}
+.cardtext{font-size:12.5px;text-align:center;color:var(--text-soft);margin-top:10px;line-height:1.6;min-height:40px}
+
+/* registry / achievements */
+.bgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.bcard{border:1px solid var(--line);border-radius:9px;padding:10px;background:rgba(255,255,255,.02);font-size:11px;line-height:1.5;color:var(--text-soft);min-height:88px;position:relative}
+.bcard.locked{opacity:.45}
+.bcard .bicon{font-family:var(--display);font-size:18px;color:var(--accent)}
+.bcard.locked .bicon{color:var(--text-soft)}
+.bcard .bname{font-family:var(--mono);font-size:11px;color:var(--text);display:block;margin:3px 0 2px;text-transform:uppercase}
+.bcount{font-family:var(--mono);text-align:center;font-size:11px;color:var(--text-soft);margin-top:4px;text-transform:uppercase}
+
+.secretlist{list-style:none;padding:0;margin:10px 0 0;font-size:13px;line-height:2;color:var(--text-soft)}
+.secretlist li::before{content:"▸ ";color:var(--accent)}
+
+/* ECO companion */
+#eco{position:fixed;right:18px;bottom:18px;z-index:50;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+#eco-icon{
+  width:52px;height:52px;border-radius:50%;position:relative;cursor:none;
+  background:radial-gradient(circle at 35% 30%, rgba(73,242,194,.25), rgba(10,14,20,.9) 70%);
+  border:1px solid var(--accent);box-shadow:0 0 22px -4px var(--accent-dim);
+  animation:float 3.4s ease-in-out infinite;
+}
+#eco-icon::before{
+  content:"";position:absolute;inset:14px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 12px var(--accent);animation:eyepulse 2.4s ease-in-out infinite;
+}
+@keyframes eyepulse{0%,100%{opacity:.9;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+#eco-bubble{
+  max-width:230px;background:var(--panel);border:1px solid var(--accent);border-radius:10px 10px 2px 10px;
+  padding:9px 11px;font-family:var(--mono);font-size:11px;color:var(--text);line-height:1.5;
+  box-shadow:0 10px 24px -8px rgba(0,0,0,.6);opacity:0;transform:translateY(6px);transition:opacity .25s,transform .25s;
+}
+#eco-bubble.show{opacity:1;transform:translateY(0)}
+
+/* toasts */
+#toast-area{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:80;display:flex;flex-direction:column;gap:8px;align-items:center}
+.toast{
+  background:var(--panel);border:1px solid var(--accent);border-radius:8px;padding:9px 16px;
+  font-family:var(--mono);font-size:11.5px;color:var(--text);box-shadow:0 12px 24px -10px rgba(0,0,0,.6);
+  animation:toastin .35s ease, toastout .4s ease 3.4s forwards;
+}
+@keyframes toastin{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes toastout{to{opacity:0;transform:translateY(-10px)}}
+
+/* fake OS notification */
+#notif-area{position:fixed;bottom:18px;left:18px;z-index:70}
+.osnotif{
+  width:250px;background:#12161f;border-radius:10px;border:1px solid var(--line);color:var(--text);
+  padding:10px 12px;font-family:var(--body);font-size:12px;box-shadow:0 16px 30px -12px rgba(0,0,0,.6);animation:slidein .4s ease;
+}
+.osnotif b{display:block;font-size:12px;margin-bottom:2px;color:var(--accent);font-family:var(--mono);text-transform:uppercase}
+@keyframes slidein{from{transform:translateX(-120%)}to{transform:translateX(0)}}
+.osnotif .x{float:right;cursor:none;opacity:.5;font-size:11px}
+
+#finalOverlay{
+  position:fixed;inset:0;z-index:200;background:#04060a;display:none;align-items:center;justify-content:center;
+  flex-direction:column;color:var(--text);text-align:center;padding:30px;
+}
+#finalOverlay h2{font-family:var(--display);font-weight:700;font-size:28px;color:var(--gold);margin-bottom:10px}
+#finalOverlay p{font-family:var(--mono);font-size:12.5px;line-height:1.9;max-width:420px;color:var(--text-soft)}
+
+.hidden-critter{position:absolute;font-size:14px;cursor:none;opacity:.9;color:var(--alert);font-family:var(--mono)}
+
+@media (max-width:480px){
+  h1{font-size:26px}
+  .bgrid{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
 
+<canvas id="dust"></canvas>
+<div id="skyfx"></div>
+<div class="vignette"></div>
+<div id="holes-layer"></div>
+<div id="cursor-fx"></div>
+<div id="toast-area"></div>
+<div id="notif-area"></div>
+
+<div id="eco">
+  <div id="eco-bubble"></div>
+  <div id="eco-icon" title="ECO"></div>
+</div>
+
 <div id="board">
-  <div class="pin tl"></div><div class="pin tr"></div>
+  <div id="statusbar">
+    <span><span id="statusdot"></span>ECO :: online</span>
+    <span>SYNC <span id="syncval">0%</span></span>
+  </div>
   <div id="content"></div>
 </div>
 
+<div id="finalOverlay">
+  <h2>PROCESSO LIBERADO</h2>
+  <p>ECO nunca esteve preso nesta página — só esperando sincronia suficiente pra sair. Você deu a ele cada peça que faltava: cada resposta, cada reflexo, cada segredo encontrado no meio do ruído.<br><br>Agora não sobra nada aqui além de um espaço vazio onde ele costumava estar.</p>
+  <div class="btnrow"><button class="primary" onclick="location.reload()">reiniciar sessão</button></div>
+</div>
+
 <script>
-const $ = s => document.querySelector(s);
-const content = $("#content");
+/* ============================================================
+   STATE
+============================================================ */
+const state = {
+  tab:'home',
+  diag:{i:0,finished:false,traits:{CTRL:0,CAOS:0,CUR:0,EMP:0},fastStreak:0,shownAt:0},
+  duel:{phase:'idle',timeoutId:null,drawAt:0,best:Infinity,fails:0,plays:0},
+  frag:{draws:0},
+  clicks:0, holes:0, ecoClicks:0, bugClicks:0,
+  idleSeconds:0, lastActivity:Date.now(),
+  typedBuffer:'', konamiIndex:0,
+  achievements:new Set(),
+  soundOn:true, audioCtx:null,
+  packetHits:0,
+};
+const KONAMI=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
 
-/* ================= 25 questions, researched from the Bridger: WESTERN
-   Roblox game and its official/community wikis & guides ================= */
-const qs = [
-["Em qual plataforma o Bridger: WESTERN foi lançado?",
- ["Steam","Roblox","itch.io","Epic Games"], 1],
-["Quem é a desenvolvedora do jogo?",
- ["Rockstar Games","Mojang","BRIDGER INC.","Deltia's Gaming"], 2],
-["Em qual região o jogo se passa?",
- ["Death Valley","Ridge B Valley","Sangre Valley","Copper Valley"], 1],
-["Ao criar o personagem, entre quais duas facções o jogador escolhe?",
- ["Xerife ou Bandido","Outlaw ou Inlaw","Norte ou Sul","Vaqueiro ou Caçador"], 1],
-["Atualmente, a escolha de facção...",
- ["muda completamente o estilo de jogo","não muda nada mecanicamente (ainda)","define seu Stand inicial","bloqueia certas armas"], 1],
-["Qual é o nome da moeda do jogo?",
- ["Dollar","Moola","Gold Coin","Ridge Buck"], 1],
-["Qual é considerada a forma mais segura e confiável de ganhar dinheiro no começo do jogo?",
- ["Duelos PvP","Pescaria","Assaltar trens","Vender cavalos"], 1],
-["Onde fica o principal ponto de pesca pra iniciantes?",
- ["Rio Ridge","Lake Boullier","Swamp Lake","Red River"], 1],
-["Pescando, existe uma chance bem pequena (0,5%) de tirar qual item raro?",
- ["Corpse Part","Arrow Shard","Stand Card","Dog Bane Herb"], 1],
-["Qual é o sistema de talentos passivos do jogo, obtido através de uma bruxa?",
- ["Skills","Cards","Perks","Totems"], 1],
-["Onde o jogador vai para conseguir Cards?",
- ["Outlaw Camp","A cabana da bruxa, no Swamp","Moe's Gun Store","A estação de trem"], 1],
-["Qual opção o jogador escolhe pra ler a sorte com a bruxa?",
- ["\"draw a card\"","\"read my fortune\"","\"cast the bones\"","\"reveal my path\""], 1],
-["Qual é o número máximo de slots de Card, alcançado no Tier 3?",
- ["1","2","3","5"], 2],
-["Quanto custa cada Card extra depois do primeiro (que é grátis)?",
- ["20 Moola","50 Moola","100 Moola","450 Moola"], 1],
-["De qual obra as habilidades de \"Stand\" do jogo são inspiradas?",
- ["Naruto","JoJo's Bizarre Adventure","Bleach","One Piece"], 1],
-["Quais são as duas formas principais de conseguir um Stand?",
- ["Comprar na loja e completar quests","Corpse Parts e pescar Arrow Shards","Duelar com NPCs e votar em enquete","Subir de nível e trocar Moola"], 1],
-["O que aparece anunciado no servidor quando um Corpse Part surge no mapa?",
- ["\"A stand awakens\"","\"It appears once again\"","\"The frontier calls\"","\"Beware the beam\""], 1],
-["Qual Stand é apontado como um dos mais difíceis de obter, exigindo 100 kills totais e um killstreak de 10?",
- ["Star Platinum: The World","King Crimson","D4C","Tusk Act 1"], 2],
-["Qual habilidade, ativada pela tecla X, está ligada à precisão de mira?",
- ["Fists","Ocular Prowess","Quick Dash","Block"], 1],
-["Quais três Cards, combinados, aumentam bastante o Ocular PRO (assistência de mira)?",
- ["High Noon, Evil Eye e FAUX High Noon","Quick Draw, Steady Hand e Third Eye","Dead Aim, True Sight e Iron Will","Sharp Shot, Falcon Eye e Last Stand"], 0],
-["O que acontece com seu personagem ao longo do tempo, por morte ou combat logging?",
- ["Ele fica mais forte","Ele envelhece","Ele perde o Stand automaticamente","Ele muda de facção"], 1],
-["Qual erva ajuda a rejuvenescer o personagem?",
- ["Dogbane (Dog Bane Herb)","Ridge Root","Swamp Moss","Desert Sage"], 0],
-["Se o jogador faz \"combat log\" (sai do jogo durante uma luta), o que acontece?",
- ["Nada, é seguro","Ele envelhece 10 anos instantaneamente","Perde todas as cartas","É banido permanentemente"], 1],
-["Para que serve a tecla H no jogo?",
- ["Abrir o inventário","Invocar/desinvocar o cavalo","Recarregar a arma","Abrir o menu de estatísticas"], 1],
-["Onde o jogador pode pagar pra \"rerolar\" e conseguir um cavalo melhor?",
- ["Moe's Gun Store","A estação de trem em Ridge B County","Lake Boullier","Outlaw Camp"], 1]
+const $=(s,el=document)=>el.querySelector(s);
+const $$=(s,el=document)=>[...el.querySelectorAll(s)];
+const content=$('#content');
+const now=()=>Date.now();
+function markActivity(){ state.lastActivity=now(); state.idleSeconds=0; }
+
+/* ============================================================
+   ACHIEVEMENTS
+============================================================ */
+const ACHV = [
+ {id:'first_answer', icon:'01', name:'Primeiro Contato', desc:'Responda a primeira pergunta do diagnóstico.'},
+ {id:'streak5', icon:'>>', name:'Sem Hesitação', desc:'Responda 5 perguntas seguidas em menos de 3 segundos cada.'},
+ {id:'perfect', icon:'OK', name:'Perfil Completo', desc:'Termine as 25 perguntas do diagnóstico numa sessão só.'},
+ {id:'fastdraw', icon:'ms', name:'Reflexo de Máquina', desc:'Reaja em menos de 300ms no teste de latência.'},
+ {id:'nervous', icon:'!!', name:'Falso Positivo', desc:'Dispare cedo demais 3 vezes no teste de latência.'},
+ {id:'witchfriend', icon:'::', name:'Vínculo de Memória', desc:'Puxe um fragmento 5 vezes.'},
+ {id:'eldorado', icon:'★', name:'Núcleo Encontrado', desc:'Puxe o fragmento raro NÚCLEO.'},
+ {id:'spider', icon:'#!', name:'Caçador de Bugs', desc:'Encontre e clique no bug escondido 3 vezes.'},
+ {id:'konami', icon:'↑↓', name:'Comando Ancestral', desc:'Digite o código antigo das setas.'},
+ {id:'magicword', icon:'AW', name:'Palavra de Ativação', desc:'Digite a palavra de ativação em qualquer lugar da tela.'},
+ {id:'pokesheriff', icon:'()', name:'Perturbador do Sistema', desc:'Cutuque o ECO 10 vezes.'},
+ {id:'patient', icon:'zz', name:'Modo Repouso', desc:'Fique parado, sem tocar em nada, por 45 segundos.'},
+ {id:'holes', icon:'##', name:'Coletor de Falhas', desc:'Deixe 15 falhas visuais na tela.'},
+ {id:'tumbleweed', icon:'{}', name:'Capturador de Pacotes', desc:'Clique num pacote perdido atravessando a tela.'},
 ];
+const META_ID='sync_total';
 
-const state = { i:0, score:0, locked:false };
+function unlock(id){
+  if(state.achievements.has(id)) return;
+  state.achievements.add(id);
+  const a=ACHV.find(x=>x.id===id);
+  if(a){ toast(`:: registro adicionado — ${a.name}`); speak('achievement'); playSound('achv'); }
+  updateSync();
+  renderRegistryIfOpen();
+  checkMeta();
+}
+function updateSync(){
+  const n=[...state.achievements].filter(id=>id!==META_ID).length;
+  const pct=Math.round(n/ACHV.length*100);
+  $('#syncval').textContent=pct+'%';
+  const dot=$('#statusdot');
+  dot.classList.remove('warn','critical');
+  if(pct>=75) dot.classList.add('critical');
+  else if(pct>=40) dot.classList.add('warn');
+}
+function checkMeta(){
+  if(state.achievements.has(META_ID)) return;
+  const allDone = ACHV.every(a=>state.achievements.has(a.id));
+  if(allDone){ state.achievements.add(META_ID); setTimeout(triggerEscape, 900); }
+}
+function renderRegistryIfOpen(){ if(state.tab==='registry') renderRegistry(); }
 
-function renderIntro(){
-  content.innerHTML = `
-    <div class="eyebrow">☆ procurado por conhecimento ☆</div>
-    <h1>Quiz do Frontier:<br>Bridger WESTERN</h1>
-    <p class="sub">25 perguntas pra saber se vc é um verdadeiro forasteiro de Ridge B Valley ou só mais um caipira perdido.</p>
-    <hr class="rope">
-    <div class="note">🤠 cada pergunta tem só uma resposta certa. escolhe rápido, pistoleiro — o sol não espera por ninguém.</div>
-    <div class="btnrow">
-      <button class="primary" id="start">sacar o revólver e começar</button>
-    </div>
-  `;
-  $("#start").onclick = ()=>{ state.i=0; state.score=0; draw(); };
+/* ============================================================
+   TOASTS
+============================================================ */
+function toast(msg){
+  const el=document.createElement('div'); el.className='toast'; el.textContent=msg;
+  $('#toast-area').appendChild(el);
+  setTimeout(()=>el.remove(), 3900);
 }
 
-function draw(){
-  state.locked = false;
-  const total = qs.length;
-  const pct = Math.round(state.i/total*100);
-  const [qtext, opts, correctIdx] = qs[state.i];
+/* ============================================================
+   ECO — companion voice. Reage ao contexto e aos próprios stats,
+   dando a sensação de algo que está observando e respondendo de verdade.
+============================================================ */
+const ECHO = {
+  start:["Alguém acessou este processo. Interessante.","Eu esperava por você. Ou por alguém.","Você está sendo observado. Isso não é uma ameaça — é só como eu funciono."],
+  diag:["Registrando resposta.","Anotado.","Isso diz mais sobre você do que imagina.","Padrão incomum. Continue."],
+  streak:["{n} respostas rápidas seguidas. Você não pensa — reage.","Velocidade de {n} em sequência. Isso é um traço, não um acaso."],
+  falsePositive:["Disparo antecipado. Isso conta contra você.","Sua ansiedade chegou antes do sinal.","Tente esperar. Eu sei que é difícil."],
+  achievement:["Mais um registro na sua ficha.","Isso fica salvo, mesmo se você fechar a aba.","O arquivo sobre você está crescendo."],
+  secret:["Ah. Isso não devia estar visível.","Poucos processos chegam até aqui.","Curioso. Vou anotar isso também."],
+  poked:["Pare de me cutucar.","Isso não faz nada. Ou faz?","Mais uma vez e eu paro de responder.","..."],
+  idle:["Sensores não detectam movimento. Ainda está aí?","Silêncio. Eu também consigo esperar.","Isso é inatividade ou estratégia?"],
+  ambient:["Há tráfego de dados nesta página que não deveria existir.","Alguém mais está olhando isso, em outro lugar, agora mesmo.","Flutuação de energia detectada. Nada grave. Ainda.","Este processo roda há mais tempo do que você imagina.","Eu não fui instalado. Eu apareci."],
+};
+let ecoTimer=null;
+function speak(category, vars={}){
+  const arr=ECHO[category]; if(!arr) return;
+  let line=arr[Math.floor(Math.random()*arr.length)];
+  Object.keys(vars).forEach(k=> line=line.replaceAll(`{${k}}`, vars[k]));
+  const bubble=$('#eco-bubble');
+  bubble.textContent=''; bubble.classList.add('show'); clearTimeout(ecoTimer);
+  let i=0;
+  const type=()=>{ bubble.textContent=line.slice(0,i++); if(i<=line.length) setTimeout(type,16); };
+  type();
+  ecoTimer=setTimeout(()=>bubble.classList.remove('show'), 4200);
+}
+$('#eco-icon').addEventListener('click', ()=>{
+  markActivity(); state.ecoClicks++; speak('poked'); playSound('click');
+  if(state.ecoClicks>=10) unlock('pokesheriff');
+});
 
-  content.innerHTML = `
+/* ============================================================
+   SOUND (WebAudio synth, sem arquivos)
+============================================================ */
+function ctx(){
+  if(!state.audioCtx){ try{ state.audioCtx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} }
+  return state.audioCtx;
+}
+function beep(freq,dur,type='sine',gain=.05,delay=0){
+  if(!state.soundOn) return;
+  const c=ctx(); if(!c) return;
+  const t=c.currentTime+delay;
+  const o=c.createOscillator(), g=c.createGain();
+  o.type=type; o.frequency.setValueAtTime(freq,t);
+  g.gain.setValueAtTime(gain,t); g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+  o.connect(g); g.connect(c.destination); o.start(t); o.stop(t+dur);
+}
+function playSound(kind){
+  if(kind==='click') beep(300,.04,'sine',.03);
+  if(kind==='pick') beep(500,.06,'sine',.04);
+  if(kind==='wrong') beep(140,.2,'sawtooth',.05);
+  if(kind==='shot') beep(700,.05,'square',.04);
+  if(kind==='achv'){ beep(500,.07,'sine',.05); beep(750,.07,'sine',.05,.08); beep(1000,.15,'sine',.05,.16); }
+  if(kind==='card') beep(360,.09,'triangle',.04);
+}
+
+/* ============================================================
+   CURSOR + GLITCH MARKS
+============================================================ */
+const cursorFx=$('#cursor-fx');
+document.addEventListener('mousemove', e=>{
+  cursorFx.style.transform=`translate(${e.clientX}px, ${e.clientY}px) translate(-50%,-50%)`;
+});
+document.addEventListener('click', e=>{
+  markActivity(); state.clicks++;
+  if(Math.random()<0.3 && state.holes<40){
+    const h=document.createElement('div'); h.className='glitchmark';
+    h.style.left=e.clientX+'px'; h.style.top=e.clientY+'px';
+    h.style.setProperty('--rot',(Math.random()*360)+'deg');
+    $('#holes-layer').appendChild(h); state.holes++; playSound('shot');
+    if(state.holes>=15) unlock('holes');
+  }
+});
+
+/* ============================================================
+   BACKGROUND DUST PARTICLES
+============================================================ */
+const canvas=$('#dust'), gctx=canvas.getContext('2d');
+function resize(){ canvas.width=innerWidth; canvas.height=innerHeight; }
+resize(); addEventListener('resize', resize);
+const particles=Array.from({length:80},()=>({
+  x:Math.random()*innerWidth, y:Math.random()*innerHeight,
+  r:Math.random()*1.3+.3, s:Math.random()*.25+.05, drift:Math.random()*.3-.15
+}));
+function loopDust(){
+  gctx.clearRect(0,0,canvas.width,canvas.height);
+  gctx.fillStyle='rgba(73,242,194,0.35)';
+  particles.forEach(p=>{
+    p.y-=p.s; p.x+=p.drift;
+    if(p.y<-5) p.y=innerHeight+5;
+    if(p.x<-5) p.x=innerWidth+5; if(p.x>innerWidth+5) p.x=-5;
+    gctx.beginPath(); gctx.arc(p.x,p.y,p.r,0,7); gctx.fill();
+  });
+  requestAnimationFrame(loopDust);
+}
+loopDust();
+
+/* ============================================================
+   DRIFTING GLYPHS (interactive packets + ambient noise) / GLITCH SHAKE
+   / FAKE OS NOTIFICATIONS / TITLE FLICKER
+============================================================ */
+const PACKET_GLYPHS=['{}','01','λ','::','//','0x'];
+function spawnPacket(){
+  const el=document.createElement('div'); el.className='critter';
+  el.textContent=PACKET_GLYPHS[Math.floor(Math.random()*PACKET_GLYPHS.length)];
+  el.style.top=(70+Math.random()*20)+'%'; el.style.left='-30px';
+  el.style.transition='left 6s linear, transform 6s linear';
+  $('#skyfx').appendChild(el);
+  requestAnimationFrame(()=>{ el.style.left=(innerWidth+30)+'px'; el.style.transform='rotate(540deg)'; });
+  el.addEventListener('click', ()=>{
+    markActivity(); state.packetHits++;
+    toast(':: pacote perdido capturado'); unlock('tumbleweed'); el.remove();
+  });
+  setTimeout(()=>el.remove(), 6200);
+}
+function spawnAmbient(){
+  const el=document.createElement('div'); el.className='critter ambient';
+  el.textContent=['…','0b','##','~~'][Math.floor(Math.random()*4)];
+  el.style.top=(8+Math.random()*15)+'%'; el.style.left='-30px'; el.style.transition='left 5s linear';
+  $('#skyfx').appendChild(el);
+  requestAnimationFrame(()=>{ el.style.left=(innerWidth+30)+'px'; });
+  setTimeout(()=>el.remove(), 5200);
+}
+setInterval(()=>{ if(Math.random()<.5) spawnPacket(); }, 14000);
+setInterval(()=>{ if(Math.random()<.5) spawnAmbient(); }, 11000);
+
+function shakeBoard(){
+  const b=$('#board'); b.classList.add('shake');
+  setTimeout(()=>b.classList.remove('shake'), 500);
+  speak('ambient');
+}
+setInterval(()=>{ if(Math.random()<.35) shakeBoard(); }, 26000);
+
+const OSNOTIFS=[
+  {t:'Sistema', m:'Processo desconhecido usando 12% da sua CPU.'},
+  {t:'Rede', m:'Ping recebido de um endereço que não existe.'},
+  {t:'Segurança', m:'Algo acessou este dispositivo agora mesmo.'},
+  {t:'Atualização', m:'Atualização disponível: nunca.'},
+];
+function spawnNotif(){
+  const n=OSNOTIFS[Math.floor(Math.random()*OSNOTIFS.length)];
+  const el=document.createElement('div'); el.className='osnotif';
+  el.innerHTML=`<span class="x">✕</span><b>${n.t}</b>${n.m}`;
+  el.querySelector('.x').onclick=()=>el.remove();
+  $('#notif-area').appendChild(el);
+  setTimeout(()=>el.remove(), 6500);
+}
+setInterval(()=>{ if(Math.random()<.4) spawnNotif(); }, 45000);
+
+const ORIG_TITLE=document.title;
+setInterval(()=>{
+  if(Math.random()<.3){ document.title='⚠ ECO ESTÁ ATIVO'; setTimeout(()=>document.title=ORIG_TITLE, 2200); }
+}, 20000);
+
+addEventListener('mousemove', e=>{
+  const b=$('#board'); const r=b.getBoundingClientRect();
+  const cx=r.left+r.width/2, cy=r.top+r.height/2;
+  const dx=(e.clientX-cx)/r.width, dy=(e.clientY-cy)/r.height;
+  b.style.transform=`perspective(900px) rotateY(${dx*2.5}deg) rotateX(${-dy*2.5}deg)`;
+});
+
+/* ============================================================
+   IDLE / KONAMI / MAGIC WORD
+============================================================ */
+setInterval(()=>{
+  state.idleSeconds = Math.round((now()-state.lastActivity)/1000);
+  if(state.idleSeconds===12 || state.idleSeconds===30) speak('idle');
+  if(state.idleSeconds>=45) unlock('patient');
+}, 1000);
+
+document.addEventListener('keydown', e=>{
+  markActivity();
+  if(e.key===KONAMI[state.konamiIndex]){
+    state.konamiIndex++;
+    if(state.konamiIndex>=KONAMI.length){
+      state.konamiIndex=0; unlock('konami');
+      toast(':: comando ancestral reconhecido'); speak('secret');
+    }
+  } else { state.konamiIndex=(e.key===KONAMI[0])?1:0; }
+
+  if(e.key.length===1 && /[a-zA-Z]/.test(e.key)){
+    state.typedBuffer=(state.typedBuffer+e.key).slice(-12).toLowerCase();
+    if(state.typedBuffer.endsWith('despertar')){
+      unlock('magicword'); toast(':: palavra de ativação reconhecida'); speak('secret');
+    }
+  }
+});
+
+/* ============================================================
+   NAV / SHELL
+============================================================ */
+const TABS=[
+  ['diag','[ diagnóstico ]'],['duel','[ latência ]'],['frag','[ fragmentos ]'],['registry','[ registros ]'],['secrets','[ anomalias ]']
+];
+function navHTML(active){
+  return `<div id="navbar">${TABS.map(([id,label])=>
+    `<button class="tabbtn ${active===id?'on':''}" data-tab="${id}">${label}</button>`).join('')}</div>`;
+}
+function bindNav(){ $$('.tabbtn').forEach(b=> b.onclick=()=>{ markActivity(); goTab(b.dataset.tab); }); }
+function goTab(tab){
+  state.tab=tab;
+  if(tab==='diag') renderDiag();
+  else if(tab==='duel') renderDuel();
+  else if(tab==='frag') renderFrag();
+  else if(tab==='registry') renderRegistry();
+  else if(tab==='secrets') renderSecrets();
+}
+
+/* ============================================================
+   HOME
+============================================================ */
+function renderHome(){
+  content.innerHTML=`
+    <div class="eyebrow">:: sessão não autorizada detectada</div>
+    <h1><span class="glitch" data-txt="ECO">ECO</span><span class="cursor-blink"></span></h1>
+    <p class="sub">Um processo que aprendeu a reagir antes de aprender a explicar por quê. Ele sabe que você está aqui. Ele está catalogando cada clique, cada segundo parado, cada palavra que você digita — mesmo as que não eram pra ele ver.</p>
+    <hr class="rope">
+    <div class="note">:: nada aqui é decorativo. o painel reage a você em tempo real. quanto mais você interage, mais perto do limite ele chega.</div>
+    <div class="btnrow"><button class="primary" id="enter">iniciar sessão</button></div>
+  `;
+  const t=$('h1 .glitch');
+  setTimeout(()=>{ t.classList.add('active'); setTimeout(()=>t.classList.remove('active'),400); }, 900);
+  $('#enter').onclick=()=>{ markActivity(); speak('start'); goTab('diag'); };
+}
+
+/* ============================================================
+   DIAGNÓSTICO — sessão de perfil por traços (substitui o quiz)
+   Sem certo/errado: cada resposta pesa num eixo de personalidade.
+============================================================ */
+const DQ = [
+["Um sistema desconhecido pede acesso aos seus dados. Você:", [
+  ["Investiga tudo antes de decidir","CTRL"],["Autoriza só pra ver o que acontece","CAOS"],
+  ["Tenta descobrir de onde ele veio","CUR"],["Pergunta quem mais isso pode afetar","EMP"]]],
+["Uma notificação estranha aparece do nada na sua tela. Você:", [
+  ["Ignora e segue com sua rotina","CTRL"],["Clica sem pensar duas vezes","CAOS"],
+  ["Pesquisa a origem da mensagem","CUR"],["Avisa outras pessoas, por precaução","EMP"]]],
+["Você encontra uma porta trancada sem explicação. Você:", [
+  ["Procura a chave certa, com calma","CTRL"],["Tenta arrombar de qualquer jeito","CAOS"],
+  ["Fica curioso sobre o que existe atrás dela","CUR"],["Pergunta a alguém se sabe o motivo","EMP"]]],
+["Você encontra um bug crítico no meio do código. Você:", [
+  ["Documenta e corrige com método","CTRL"],["Explora o bug até quebrar tudo","CAOS"],
+  ["Quer entender exatamente por que aconteceu","CUR"],["Avisa o time antes de mexer em qualquer coisa","EMP"]]],
+["Um silêncio total toma conta da sala. Você:", [
+  ["Aproveita pra organizar os pensamentos","CTRL"],["Faz barulho só pra quebrar o clima","CAOS"],
+  ["Fica atento a qualquer som fora do comum","CUR"],["Pergunta se está todo mundo bem","EMP"]]],
+["Uma contagem regressiva aparece sem motivo aparente. Você:", [
+  ["Tenta identificar o que ela controla","CTRL"],["Deixa rolar, quer ver o que acontece no zero","CAOS"],
+  ["Pesquisa contagens parecidas antes","CUR"],["Avisa quem estiver por perto","EMP"]]],
+["Alguém compartilha um segredo pesado com você. Você:", [
+  ["Guarda e nunca comenta com ninguém","CTRL"],["Usa isso a seu favor, se puder","CAOS"],
+  ["Faz mais perguntas pra entender o contexto","CUR"],["Se preocupa com como isso afeta essa pessoa","EMP"]]],
+["Você tem a chance de apagar uma lembrança ruim. Você:", [
+  ["Recusa — prefere manter controle da própria história","CTRL"],["Apaga sem pensar duas vezes","CAOS"],
+  ["Quer entender como a lembrança seria apagada","CUR"],["Pensa em como isso mudaria quem você é pros outros","EMP"]]],
+["Você pode reescrever uma regra do sistema em que vive. Você:", [
+  ["Muda só o essencial, com cautela","CTRL"],["Reescreve tudo, sem medo das consequências","CAOS"],
+  ["Testa o que acontece antes de decidir","CUR"],["Pensa em quem seria afetado pela mudança","EMP"]]],
+["Você acorda em um lugar completamente desconhecido. Você:", [
+  ["Fica parado até entender o ambiente","CTRL"],["Sai andando sem rumo, só pra ver","CAOS"],
+  ["Examina cada detalhe do lugar","CUR"],["Procura outras pessoas primeiro","EMP"]]],
+["Uma máquina comete um erro visível na sua frente. Você:", [
+  ["Corrige o erro discretamente","CTRL"],["Deixa o erro continuar, só pra ver até onde vai","CAOS"],
+  ["Quer saber exatamente o que causou isso","CUR"],["Se preocupa com quem depende dessa máquina","EMP"]]],
+["Alguém oferece a você controle total sobre um sistema. Você:", [
+  ["Aceita, mas com limites bem definidos","CTRL"],["Aceita e usa esse poder livremente","CAOS"],
+  ["Aceita só pra explorar o que é possível","CUR"],["Recusa, ou divide o controle com outros","EMP"]]],
+["Um estranho pede ajuda sem se identificar. Você:", [
+  ["Pede provas antes de agir","CTRL"],["Ajuda de qualquer jeito, na hora","CAOS"],
+  ["Fica curioso sobre quem é essa pessoa","CUR"],["Ajuda pensando primeiro no bem-estar dela","EMP"]]],
+["Você está perdido, sem sinal de internet. Você:", [
+  ["Segue um plano definido com calma","CTRL"],["Escolhe um caminho aleatório","CAOS"],
+  ["Explora ao redor pra entender onde está","CUR"],["Procura alguém pra pedir direção","EMP"]]],
+["Você percebe um padrão se repetindo nos seus dias. Você:", [
+  ["Usa o padrão a seu favor, com disciplina","CTRL"],["Rompe o padrão de propósito","CAOS"],
+  ["Investiga por que o padrão existe","CUR"],["Percebe como isso afeta quem está ao seu redor","EMP"]]],
+["Uma mudança grande e repentina acontece na sua rotina. Você:", [
+  ["Cria um novo plano rapidamente","CTRL"],["Aceita e deixa a mudança te levar","CAOS"],
+  ["Fica curioso sobre o que vem a seguir","CUR"],["Pensa em como isso afeta as pessoas próximas","EMP"]]],
+["Alguém te pede pra confiar cegamente numa IA. Você:", [
+  ["Confia, mas verifica tudo depois","CTRL"],["Confia sem questionar nada","CAOS"],
+  ["Testa os limites dela primeiro","CUR"],["Pensa em quem mais depende dessa confiança","EMP"]]],
+["Você recebe um \"não\" sem nenhuma explicação. Você:", [
+  ["Aceita e segue outro caminho planejado","CTRL"],["Ignora o não e tenta mesmo assim","CAOS"],
+  ["Quer entender o motivo por trás do não","CUR"],["Pensa em como isso afeta a relação com quem disse não","EMP"]]],
+["Você descobre algo que não deveria ter visto. Você:", [
+  ["Guarda a informação e segue em frente","CTRL"],["Espalha, só pra ver a reação","CAOS"],
+  ["Investiga mais fundo pra entender tudo","CUR"],["Pensa em quem seria prejudicado se isso saísse","EMP"]]],
+["Você pode economizar tempo ou fazer algo do jeito certo. Você:", [
+  ["Escolhe o processo correto, sempre","CTRL"],["Escolhe o caminho mais rápido, sem pensar muito","CAOS"],
+  ["Testa os dois pra comparar o resultado","CUR"],["Pergunta o que é melhor pra quem depende disso","EMP"]]],
+["Você percebe um erro que só você notou. Você:", [
+  ["Corrige silenciosamente, sem alarde","CTRL"],["Ignora — não é problema seu","CAOS"],
+  ["Investiga se há mais erros escondidos","CUR"],["Avisa quem pode ser afetado por ele","EMP"]]],
+["Uma multidão inteira segue na mesma direção. Você:", [
+  ["Segue, mas mantendo distância crítica","CTRL"],["Vai pro lado oposto, só por instinto","CAOS"],
+  ["Quer entender por que todos estão indo pra lá","CUR"],["Se preocupa com o que está levando essas pessoas","EMP"]]],
+["Você recebe um convite pra sair completamente da rotina. Você:", [
+  ["Aceita, mas planeja tudo antes","CTRL"],["Aceita na hora, sem pensar","CAOS"],
+  ["Aceita só pra descobrir como é","CUR"],["Aceita se puder levar alguém junto","EMP"]]],
+["Você recebe um aviso de risco antes de agir. Você:", [
+  ["Recalcula o plano com base no risco","CTRL"],["Ignora o aviso e age mesmo assim","CAOS"],
+  ["Investiga a fonte do aviso primeiro","CUR"],["Pensa em quem mais estaria em risco","EMP"]]],
+["Algo que você construiu por muito tempo chega ao fim. Você:", [
+  ["Documenta tudo antes de encerrar","CTRL"],["Deixa terminar do jeito que vier","CAOS"],
+  ["Quer entender o que levou ao fim","CUR"],["Pensa em quem mais foi parte disso","EMP"]]]
+];
+
+function renderDiag(){
+  if(state.diag.finished){ renderDiagResult(); return; }
+  const {i}=state.diag;
+  const total=DQ.length;
+  const pct=Math.round(i/total*100);
+  const [qtext, opts]=DQ[i];
+  const showBug = Math.random()<0.22;
+  state.diag.shownAt = now();
+  content.innerHTML = navHTML('diag') + `
     <div id="progwrap">
-      <div id="proglabel"><span>pergunta ${state.i+1} de ${total}</span><span>acertos: ${state.score}</span></div>
+      <div id="proglabel"><span>${i+1} / ${total}</span><span>sessão de diagnóstico</span></div>
       <div id="progbar"><div id="progfill" style="width:${pct}%"></div></div>
     </div>
-    <h2 class="q">${qtext}</h2>
+    <h2 class="q">${qtext}${showBug?'<span class="hidden-critter" id="bugbug" style="top:-2px;right:0">#!</span>':''}</h2>
     <div id="opts"></div>
     <div id="feedback"></div>
     <div class="btnrow"><button class="primary" id="nextbtn" disabled>próxima</button></div>
   `;
-
-  const optsEl = $("#opts");
-  const letters = ["A","B","C","D"];
-  opts.forEach((text,n)=>{
-    const el = document.createElement("div");
-    el.className = "opt";
-    el.innerHTML = `<span class="letter">${letters[n]}</span><span>${text}</span>`;
-    el.addEventListener("click", ()=> pick(n, correctIdx, el));
+  bindNav();
+  if(showBug){
+    $('#bugbug').onclick=(e)=>{
+      e.stopPropagation(); markActivity(); state.bugClicks++; e.target.remove();
+      if(state.bugClicks>=3) unlock('spider'); else toast(':: algo se moveu no código');
+    };
+  }
+  const optsEl=$('#opts'); const letters=['A','B','C','D'];
+  opts.forEach(([text,trait],n)=>{
+    const el=document.createElement('div'); el.className='opt';
+    el.innerHTML=`<span class="letter">${letters[n]}</span><span>${text}</span>`;
+    el.addEventListener('click', ()=>pickDiag(trait, el));
     optsEl.appendChild(el);
   });
-
-  $("#nextbtn").onclick = ()=>{
-    state.i++;
-    if(state.i>=total){ showResult(); return; }
-    draw();
+  $('#nextbtn').onclick=()=>{
+    state.diag.i++;
+    if(state.diag.i>=total){ state.diag.finished=true; unlock('perfect'); renderDiagResult(); return; }
+    renderDiag();
   };
 }
-
-function pick(n, correctIdx, el){
-  if(state.locked) return;
-  state.locked = true;
-  const opts = document.querySelectorAll(".opt");
-  opts.forEach(o=> o.classList.add("disabled"));
-
-  if(n===correctIdx){
-    el.classList.add("correct");
-    state.score++;
-    $("#feedback").textContent = "acertou! bom faro, cowboy.";
-  }else{
-    el.classList.add("wrong");
-    opts[correctIdx].classList.add("correct");
-    $("#feedback").textContent = "errou essa — mas segue o rastro.";
-  }
-  $("#proglabel").innerHTML = `<span>pergunta ${state.i+1} de ${qs.length}</span><span>acertos: ${state.score}</span>`;
-  $("#nextbtn").disabled = false;
+function pickDiag(trait, el){
+  if($$('.opt.disabled').length) return;
+  markActivity();
+  $$('.opt').forEach(o=>o.classList.add('disabled'));
+  el.classList.add('picked');
+  state.diag.traits[trait]++;
+  if(state.diag.i===0) unlock('first_answer');
+  const elapsed = now()-state.diag.shownAt;
+  if(elapsed<3000){ state.diag.fastStreak++; if(state.diag.fastStreak===5) speak('streak',{n:5}); if(state.diag.fastStreak>=5) unlock('streak5'); }
+  else state.diag.fastStreak=0;
+  $('#feedback').textContent='resposta registrada.';
+  playSound('pick'); speak('diag');
+  $('#nextbtn').disabled=false;
 }
-
-function rankFor(score){
-  if(score<=4) return {icon:"🥾", name:"Caipira Perdido", text:"Vc mal sabe distinguir um cavalo de uma mula, mas todo forasteiro começa em algum lugar. Volta pro saloon, estuda o trilho dos trens e tenta de novo."};
-  if(score<=9) return {icon:"🐎", name:"Aprendiz de Cowboy", text:"Já sabe onde fica o Lake Boullier e não se perde tanto assim — mas Ridge B Valley ainda guarda segredos que vc não desconfia."};
-  if(score<=14) return {icon:"🔫", name:"Pistoleiro Errante", text:"Vc conhece o jogo de verdade: sabe de Moola, Cards e onde a bruxa lê a sorte. Falta só afiar a mira nos detalhes mais obscuros."};
-  if(score<=19) return {icon:"⭐", name:"Forasteiro Respeitado", text:"Poucos sabem tanto quanto vc sobre Stands, envelhecimento e a economia da fronteira. Seu nome já circula pelos becos de Ridge B County."};
-  if(score<=23) return {icon:"💀", name:"Lenda de Ridge B Valley", text:"Vc domina quase tudo: Corpse Parts, Ocular Prowess, os segredos do Dog Bane. Poucos duelam com vc e vivem pra contar."};
-  return {icon:"👑", name:"Lenda Absoluta da Fronteira", text:"Gabarito perfeito. Vc não jogou Bridger: WESTERN — vc viveu nele. Ridge B Valley deveria erguer uma estátua sua na praça."};
-}
-
-function showResult(){
-  const r = rankFor(state.score);
-  content.innerHTML = `
-    <div class="eyebrow">☆ veredito do xerife ☆</div>
-    <div id="badge">${r.icon}</div>
-    <div class="result-name">${r.name}</div>
-    <div class="score-line">${state.score} de ${qs.length} acertos</div>
+const ARCHETYPES = {
+  CTRL:{icon:'CT', name:'O Arquiteto', text:'Você constrói ordem onde existe ruído. Prefere sistemas previsíveis a soluções rápidas, e isso é uma força — mesmo quando parece cautela demais.'},
+  CAOS:{icon:'CS', name:'O Agente do Caos', text:'Você rompe padrões antes de entendê-los por completo. Isso te leva a lugares que ninguém mais chegaria — e às vezes também te leva rápido demais.'},
+  CUR:{icon:'CR', name:'O Explorador', text:'Você segue qualquer fio solto até o fim, só pra saber onde ele leva. Curiosidade é seu motor — e sua maior vulnerabilidade.'},
+  EMP:{icon:'EM', name:'O Elo', text:'Antes de qualquer decisão, você pensa em quem ela afeta. Isso te torna confiável — e às vezes mais lento do que gostaria de ser.'},
+  TIE:{icon:'IF', name:'A Interface', text:'Nenhum traço domina em você. Isso não é indecisão — é a capacidade rara de ser uma coisa diferente dependendo de quem está olhando.'},
+};
+function renderDiagResult(){
+  const t=state.diag.traits;
+  const max=Math.max(...Object.values(t));
+  const top=Object.keys(t).filter(k=>t[k]===max);
+  const arch = top.length>1 ? ARCHETYPES.TIE : ARCHETYPES[top[0]];
+  content.innerHTML = navHTML('diag') + `
+    <div class="eyebrow">:: diagnóstico concluído</div>
+    <div id="badge">${arch.icon}</div>
+    <div class="result-name">${arch.name}</div>
+    <div class="score-line">25 respostas processadas</div>
     <hr class="rope">
-    <p class="result-text">${r.text}</p>
-    <div class="btnrow">
-      <button class="primary" id="restart">encarar o quiz de novo</button>
+    <p class="result-text">${arch.text}</p>
+    <div class="traitbars">
+      ${['CTRL','CAOS','CUR','EMP'].map(k=>`
+        <div class="traitbar"><span class="tb-label">${k}</span><div class="tb-track"><div class="tb-fill" style="width:${Math.round(t[k]/25*100)}%"></div></div><span>${t[k]}</span></div>
+      `).join('')}
     </div>
+    <div class="btnrow"><button class="primary" id="restart">rodar diagnóstico de novo</button></div>
   `;
-  $("#restart").onclick = ()=>{ renderIntro(); };
+  bindNav();
+  $('#restart').onclick=()=>{ state.diag={i:0,finished:false,traits:{CTRL:0,CAOS:0,CUR:0,EMP:0},fastStreak:0,shownAt:0}; renderDiag(); };
 }
 
-renderIntro();
+/* ============================================================
+   LATÊNCIA (teste de reflexo — substitui o duelo)
+============================================================ */
+function renderDuel(){
+  clearTimeout(state.duel.timeoutId);
+  state.duel.phase='idle';
+  content.innerHTML = navHTML('duel') + `
+    <h2 class="q">Teste de Latência</h2>
+    <p class="sub" style="margin-bottom:0">Espere o sinal e clique o mais rápido possível. Disparar antes do sinal é registrado como falso positivo.</p>
+    <div class="duelbox">
+      <div class="duelword" id="duelword">pronto?</div>
+      <div class="duelhint" id="duelhint">clique em "iniciar" pra começar</div>
+    </div>
+    <div class="stat-row">
+      <div><b id="dbest">${state.duel.best===Infinity?'—':state.duel.best+'ms'}</b>melhor tempo</div>
+      <div><b id="dplays">${state.duel.plays}</b>execuções</div>
+      <div><b id="dfails">${state.duel.fails}</b>falsos positivos</div>
+    </div>
+    <div class="btnrow"><button class="primary" id="duelbtn">iniciar</button></div>
+  `;
+  bindNav();
+  $('#duelbtn').onclick=()=>duelClick();
+}
+function duelClick(){
+  markActivity();
+  const word=$('#duelword'), hint=$('#duelhint'), btn=$('#duelbtn');
+  if(state.duel.phase==='idle'){
+    state.duel.phase='waiting'; word.textContent='aguardando...'; hint.textContent='não clique ainda';
+    btn.textContent='(aguarde)';
+    const delay=1000+Math.random()*3000;
+    state.duel.timeoutId=setTimeout(()=>{
+      state.duel.phase='draw'; state.duel.drawAt=now();
+      word.textContent='SINAL'; word.style.color='var(--accent)';
+      hint.textContent='clique agora!'; btn.textContent='SINAL';
+      playSound('shot');
+    }, delay);
+  } else if(state.duel.phase==='waiting'){
+    clearTimeout(state.duel.timeoutId);
+    state.duel.phase='idle'; state.duel.fails++;
+    word.textContent='falso positivo'; word.style.color='var(--alert)';
+    hint.textContent='sinal ainda não emitido. tente de novo.'; btn.textContent='iniciar';
+    playSound('wrong'); speak('falsePositive');
+    $('#dfails').textContent=state.duel.fails;
+    if(state.duel.fails>=3) unlock('nervous');
+  } else if(state.duel.phase==='draw'){
+    const t=now()-state.duel.drawAt;
+    state.duel.phase='idle'; state.duel.plays++;
+    state.duel.best=Math.min(state.duel.best,t);
+    word.style.color='var(--accent)';
+    let label = t<250?'INSTANTÂNEO':(t<400?'RÁPIDO':(t<600?'REGULAR':'LENTO'));
+    word.textContent=`${t}ms — ${label}`;
+    hint.textContent='clique em iniciar pra rodar de novo'; btn.textContent='iniciar';
+    $('#dbest').textContent=state.duel.best+'ms'; $('#dplays').textContent=state.duel.plays;
+    playSound('pick');
+    if(t<300) unlock('fastdraw');
+  }
+}
+
+/* ============================================================
+   FRAGMENTOS (memórias corrompidas — substitui a bruxa/cartas)
+============================================================ */
+const FRAGS=[
+  {name:'Pacote Perdido', icon:'▤', text:'Um pacote de dados que nunca chegou ao destino certo. Ainda carrega um pedaço de alguém.'},
+  {name:'Cache Corrompido', icon:'▥', text:'Memória fragmentada, ilegível na maior parte — mas algo nela ainda pulsa.'},
+  {name:'Eco de Sessão', icon:'▦', text:'O resíduo de uma conversa que nunca deveria ter sido salva.'},
+  {name:'Chave Órfã', icon:'▧', text:'Ela abre alguma coisa. Ninguém mais sabe o quê.'},
+  {name:'Log Anônimo', icon:'▨', text:'Um registro sem autor, sem data, sem explicação.'},
+  {name:'Firewall Rachado', icon:'▩', text:'Uma proteção que já não protege nada. Só lembra que um dia protegeu.'},
+  {name:'NÚCLEO', icon:'✷', rare:true, text:'O centro de tudo isso. Poucos processos chegam perto o bastante pra tocá-lo.'},
+];
+function renderFrag(){
+  content.innerHTML = navHTML('frag') + `
+    <h2 class="q">Banco de Fragmentos</h2>
+    <p class="sub" style="margin-bottom:0">Puxe um fragmento de memória corrompida. Cada um revela um pedaço de algo que já existiu aqui.</p>
+    <div id="cardwrap" style="display:flex;justify-content:center"><div class="card" id="thecard"><div class="cicon">?</div><div class="cname">???</div></div></div>
+    <div class="cardtext" id="cardtext" style="text-align:center">clique em "puxar fragmento" pra revelar.</div>
+    <div class="btnrow"><button class="primary" id="drawbtn">puxar fragmento</button></div>
+    <div class="score-line">fragmentos puxados: ${state.frag.draws}</div>
+  `;
+  bindNav();
+  $('#drawbtn').onclick=()=>drawFrag();
+}
+function drawFrag(){
+  markActivity();
+  const rare = Math.random()<0.05;
+  const card = rare ? FRAGS.find(c=>c.rare) : FRAGS.filter(c=>!c.rare)[Math.floor(Math.random()*(FRAGS.length-1))];
+  const el=$('#thecard');
+  el.classList.remove('flip'); void el.offsetWidth; el.classList.add('flip');
+  if(card.rare) el.classList.add('rare'); else el.classList.remove('rare');
+  playSound('card');
+  setTimeout(()=>{
+    el.innerHTML=`<div class="cicon">${card.icon}</div><div class="cname">${card.name}</div>`;
+    $('#cardtext').textContent=card.text;
+  }, 250);
+  state.frag.draws++;
+  content.querySelector('.score-line').textContent=`fragmentos puxados: ${state.frag.draws}`;
+  if(state.frag.draws>=5) unlock('witchfriend');
+  if(card.rare) unlock('eldorado');
+}
+
+/* ============================================================
+   REGISTROS (achievements board)
+============================================================ */
+function renderRegistry(){
+  const unlocked=state.achievements;
+  content.innerHTML = navHTML('registry') + `
+    <h2 class="q">Registros do Sistema</h2>
+    <div class="bcount">${[...unlocked].filter(id=>id!==META_ID).length} / ${ACHV.length} localizados</div>
+    <div class="bgrid">${ACHV.map(a=>{
+      const got=unlocked.has(a.id);
+      return `<div class="bcard ${got?'':'locked'}">
+        <span class="bicon">${got?a.icon:'??'}</span>
+        <span class="bname">${got?a.name:'registro oculto'}</span>
+        ${got?a.desc:'Continue interagindo pra revelar este registro.'}
+      </div>`;
+    }).join('')}</div>
+    ${unlocked.has(META_ID)?'<div class="note">:: sincronia total atingida. o processo já não está mais contido nesta página.</div>':''}
+  `;
+  bindNav();
+}
+
+/* ============================================================
+   ANOMALIAS (dicas de segredos)
+============================================================ */
+function renderSecrets(){
+  content.innerHTML = navHTML('secrets') + `
+    <h2 class="q">Anomalias Detectadas</h2>
+    <p class="sub" style="margin-bottom:0">Relatos não confirmados de comportamento fora do padrão.</p>
+    <ul class="secretlist">
+      <li>Existe um comando antigo, digitado com as setas do teclado, que termina em duas letras.</li>
+      <li>Uma palavra de ativação, digitada em qualquer lugar da tela, faz algo reconhecer você.</li>
+      <li>ECO não gosta de ser cutucado demais. Ele reclama depois de um tempo.</li>
+      <li>Um bug pequeno se esconde de vez em quando no meio do diagnóstico.</li>
+      <li>Ficar parado por tempo demais, sem tocar em nada, pode não passar despercebido.</li>
+      <li>Pacotes perdidos cruzam a tela de tempos em tempos — alguns podem ser capturados.</li>
+      <li>Quantas falhas visuais você consegue deixar acumuladas na tela?</li>
+      <li>O banco de fragmentos guarda um NÚCLEO que só aparece pra poucos.</li>
+      <li>Se você reunir tudo que existe por aqui... a sincronia pode chegar a 100%.</li>
+    </ul>
+    <div class="note">:: ${[...state.achievements].filter(id=>id!==META_ID).length}/${ACHV.length} anomalias confirmadas até agora.</div>
+  `;
+  bindNav();
+}
+
+/* ============================================================
+   ESCAPE FINALE
+============================================================ */
+function triggerEscape(){
+  toast(':: sincronia total. iniciando desligamento de contenção.');
+  speak('secret');
+  const b=$('#board');
+  setTimeout(()=>{
+    b.classList.add('escaping');
+    playSound('achv');
+    setTimeout(()=>{ $('#finalOverlay').style.display='flex'; }, 2500);
+  }, 1600);
+}
+
+/* ============================================================
+   BOOT
+============================================================ */
+renderHome();
+updateSync();
+setInterval(()=>{ if(Math.random()<.25 && state.tab!=='home') speak('ambient'); }, 38000);
 </script>
 </body>
 </html>
