@@ -1,0 +1,3 @@
+/* legacy/legacy.css — build 2019-08, do not merge into current stylesheet */
+code{ background:rgba(0,0,0,.15); padding:1px 5px; border-radius:3px; font-size:12px; }
+#board{ filter:saturate(.85) contrast(1.02); }

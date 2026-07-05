@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>404 — Ridge B Valley</title>
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Bitter:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(180deg,#4a2f1c,#33200f);color:#ecd9ae;font-family:'Bitter',serif;padding:24px}
+  .box{max-width:520px;text-align:center}
+  h1{font-family:'Special Elite',cursive;font-size:22px;letter-spacing:.04em}
+  p{line-height:1.7;color:#d8bb84;font-size:14px}
+  a{color:#e8c66a}
+  .path{font-family:monospace;background:rgba(0,0,0,.3);padding:2px 6px;border-radius:4px}
+</style>
+</head>
+<body>
+<div class="box">
+  <h1 id="title">essa placa não existe</h1>
+  <p id="msg">Não tem nada em <span class="path" id="p"></span>. Ridge B Valley é grande, mas não infinita — talvez.</p>
+  <p><a href="/">voltar pro quadro</a></p>
+</div>
+<script>
+  var path = location.pathname;
+  document.getElementById('p').textContent = path;
+  if(/legacy\/light\.html$/.test(path)){
+    document.getElementById('title').textContent = 'light.html não sobreviveu';
+    document.getElementById('msg').innerHTML = 'Existiu uma versão clara desse arquivo, junto de <span class="path">dark.html</span>. Alguém removeu uma das duas. Não foi vc.';
+  }
+  if(/^\/research\/?/.test(path)){
+    document.getElementById('title').textContent = 'research/ não existe mais';
+    document.getElementById('msg').innerHTML = 'Isso foi removido de propósito, não por acidente. Não tem mais nada aqui pra achar — pelo menos não nesse caminho.';
+  }
+  console.log('[404] requested:', path);
+</script>
+</body>
+</html>

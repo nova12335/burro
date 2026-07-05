@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /legacy/
+Disallow: /.archive/
+Disallow: /.archive/horizon/
+Disallow: /.archive/horizon/repo/
+Disallow: /research/
+
+Sitemap: /sitemap.xml
